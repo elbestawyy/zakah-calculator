@@ -1,0 +1,55 @@
+spring:
+  application:
+    name: ZakahCalculator
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+#  mail:
+#    protocol: "smtp"
+#    host: "smtp.gmail.com"
+#    port: "587"
+#    username: "madel25810@gmail.com"
+#    password: "dqmkaksbmwtnrdkh"
+#    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#          starttls:
+#            enable: true
+
+  datasource:
+    url: jdbc:postgresql://ep-wandering-glitter-addacktd-pooler.c-2.us-east-1.aws.neon.tech/zakah_calc_db?sslmode=require&channel_binding=require
+    username: neondb_owner
+    password: "npg_ZJLjg4kaCcE7"
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: POSTGRESQL
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+
+server:
+  servlet:
+    context-path: "/api/v1"
+  error:
+    include-message: ALWAYS
+  tomcat:
+    max-swallow-size: 10MB
+
+
+app:
+  security:
+    jwt:
+      secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+      access-token-expiration: 86400000 # a day
+      refresh-token-expiration: 604800000 # 7 days
