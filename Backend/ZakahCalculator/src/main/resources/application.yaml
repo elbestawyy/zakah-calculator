@@ -22,7 +22,7 @@ spring:
 #            enable: true
 
   datasource:
-    url: jdbc:postgresql://ep-wandering-glitter-addacktd-pooler.c-2.us-east-1.aws.neon.tech/zakah_calc_db?sslmode=require&channel_binding=require
+    url: jdbc:postgresql://ep-wandering-glitter-addacktd.c-2.us-east-1.aws.neon.tech/zakah_calc_db?user=neondb_owner&password=npg_ZJLjg4kaCcE7&sslmode=require
     username: neondb_owner
     password: "npg_ZJLjg4kaCcE7"
     driver-class-name: org.postgresql.Driver
