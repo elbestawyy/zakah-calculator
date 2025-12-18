@@ -1,11 +1,10 @@
 package ntg.project.ZakahCalculator.entity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+import ntg.project.ZakahCalculator.entity.util.BaseEntity;
+
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 
 @Entity
@@ -16,10 +15,11 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ZakahRecord {
+public class ZakahRecord extends BaseEntity {
 
         @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "zakahRecord_seq_id")
+        @SequenceGenerator(name = "zakahRecord_seq_id",sequenceName = "zakahRecord_seq_id",allocationSize = 1)
         private Long id;
 
         @ManyToOne
@@ -31,15 +31,5 @@ public class ZakahRecord {
 
         @Column(name = "gold_price", nullable = false, precision = 10, scale = 2)
         private BigDecimal goldPrice;
-
-        @Column(name = "created_at", nullable = false)
-        private LocalDate createdAt;
-
-        @PrePersist
-        protected void onCreate() {
-            if (createdAt == null) {
-                createdAt = LocalDate.now();
-            }
-        }
     }
 
