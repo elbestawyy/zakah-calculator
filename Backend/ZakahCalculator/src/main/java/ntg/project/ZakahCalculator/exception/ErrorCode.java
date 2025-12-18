@@ -18,7 +18,7 @@ public enum ErrorCode {
     BAD_CREDENTIALS("BAD_CREDENTIALS", "Username and / or password is incorrect", UNAUTHORIZED),
     USERNAME_NOT_FOUND("USERNAME_NOT_FOUND", "username not found", NOT_FOUND),
     INTERNAL_EXCEPTION("INTERNAL_EXCEPTION", "Internal server error", INTERNAL_SERVER_ERROR),
-    USER_DELETED_EXCEPTION("USER_DELETED_EXCEPTION", "User is already deleted", CONFLICT),
+    USER_ALREADY_DELETED("USER_ALREADY_DELETED", "User is already deleted", CONFLICT),
     USER_ALREADY_ACTIVE("USER_ALREADY_ACTIVE", "User is already active", CONFLICT),
     PERIOD_EXPIRED("PERIOD_EXPIRED", "period expired", BAD_REQUEST),
     IMAGE_NOT_FOUND("IMAGE_NOT_FOUND", "no images for this user", NOT_FOUND),
