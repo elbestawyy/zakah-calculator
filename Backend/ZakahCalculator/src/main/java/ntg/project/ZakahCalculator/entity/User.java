@@ -1,11 +1,9 @@
 package ntg.project.ZakahCalculator.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
+import lombok.*;
+import org.hibernate.annotations.NaturalId;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -22,11 +20,15 @@ public class User {
 
     private String name;
 
-    @Column(unique = true)
+    @NaturalId
     private String email;
-
     private String password;
+    private boolean isDeleted = false ;
+    private LocalDateTime deletionDate;
 
+
+
+/*--------------------------------Relation------------------------------------*/
     @ManyToMany
     @JoinTable(
             name = "user_roles",
@@ -35,6 +37,5 @@ public class User {
     )
     private List<Role> roles;
 
-    // getters & setters
 }
 
