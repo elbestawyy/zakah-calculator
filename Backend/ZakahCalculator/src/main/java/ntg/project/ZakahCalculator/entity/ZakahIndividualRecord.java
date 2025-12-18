@@ -1,10 +1,10 @@
 package ntg.project.ZakahCalculator.entity;
+
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 import java.math.BigDecimal;
+
 @Entity
 @Table(name = "zakah_individual_records")
 @DiscriminatorValue("INDIVIDUAL")
@@ -15,19 +15,19 @@ import java.math.BigDecimal;
 @Setter
 public class ZakahIndividualRecord extends ZakahRecord {
 
-        @Column(precision = 15, scale = 2)
-        private BigDecimal cash;
+    @Column(precision = 15, scale = 2)
+    private BigDecimal cash;
 
-        @Column(precision = 15, scale = 2)
-        private BigDecimal gold;
+    @Column(precision = 15, scale = 2)
+    private BigDecimal gold;
 
-        @Column(precision = 15, scale = 2)
-        private BigDecimal silver;
+    @Column(precision = 15, scale = 2)
+    private BigDecimal silver;
 
-        @Column(precision = 15, scale = 2)
-        private BigDecimal stocks;
+    @Column(precision = 15, scale = 2)
+    private BigDecimal stocks;
 
-        @Column(precision = 15, scale = 2)
-        private BigDecimal bonds;
-    }
+    @Column(precision = 15, scale = 2)
+    private BigDecimal bonds;
+}
 

@@ -1,4 +1,4 @@
-package ntg.project.ZakahCalculator.entity;
+package ntg.project.ZakahCalculator.entity.util;
 
 public enum OtpType {
     EMAIL_VERIFICATION,

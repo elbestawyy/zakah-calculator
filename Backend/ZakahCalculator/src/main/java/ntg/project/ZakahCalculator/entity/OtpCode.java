@@ -1,10 +1,8 @@
 package ntg.project.ZakahCalculator.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import ntg.project.ZakahCalculator.entity.util.OtpType;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
@@ -15,11 +13,13 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @EntityListeners(AuditingEntityListener.class)
 public class OtpCode {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "otpCode_seq_id")
+    @SequenceGenerator(name = "otpCode_seq_id",sequenceName = "otpCode_seq_id",allocationSize = 1)
     private Long id;
 
     @OneToOne
