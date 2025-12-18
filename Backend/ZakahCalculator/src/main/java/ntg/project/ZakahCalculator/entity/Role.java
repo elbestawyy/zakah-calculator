@@ -1,8 +1,10 @@
 package ntg.project.ZakahCalculator.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-import ntg.project.ZakahCalculator.entity.util.UserType;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -12,12 +14,10 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
 public class Role {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "role_seq_id")
-    @SequenceGenerator(name = "role_seq_id",sequenceName = "role_seq_id",allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Enumerated(EnumType.STRING)

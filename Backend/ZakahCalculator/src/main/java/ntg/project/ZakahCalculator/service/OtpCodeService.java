@@ -1,7 +1,7 @@
 package ntg.project.ZakahCalculator.service;
 
 import ntg.project.ZakahCalculator.entity.OtpCode;
-import ntg.project.ZakahCalculator.entity.util.OtpType;
+import ntg.project.ZakahCalculator.entity.OtpType;
 import ntg.project.ZakahCalculator.entity.User;
 
 import java.util.Optional;

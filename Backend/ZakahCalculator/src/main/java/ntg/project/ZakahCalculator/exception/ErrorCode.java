@@ -35,8 +35,7 @@ public enum ErrorCode {
     FORGET_PASSWORD_SENDING_OTP_FAILED("FORGET_PASSWORD_SENDING_OTP_FAILED", "failed to send otp to your account", INTERNAL_SERVER_ERROR),
     OTP_TOKEN_INVALID("OTP_TOKEN_INVALID", "invalid token send it again!!", INTERNAL_SERVER_ERROR),
     EMPTY_FEED_FOR_USER("EMPTY_FEED_FOR_USER", "Follow Friends To see their Posts", NOT_FOUND),
-    IMAGE_TYPE_NOT_SUPPORTED("IMAGE_TYPE_NOT_SUPPORTED", "Image type not supported. Allowed types: JPG, JPEG, PNG, BMP, WEBP, SVG", BAD_REQUEST),
-    ROLE_NOT_FOUND("ROLE_NOT_FOUND","role not found",NOT_FOUND);
+    IMAGE_TYPE_NOT_SUPPORTED("IMAGE_TYPE_NOT_SUPPORTED", "Image type not supported. Allowed types: JPG, JPEG, PNG, BMP, WEBP, SVG", BAD_REQUEST);
 
     private final String code;
     private final String defaultMessage;

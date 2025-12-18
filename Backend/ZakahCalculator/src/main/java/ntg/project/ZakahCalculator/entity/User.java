@@ -2,7 +2,6 @@ package ntg.project.ZakahCalculator.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import ntg.project.ZakahCalculator.entity.util.BaseEntity;
 import org.hibernate.annotations.NaturalId;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,13 +12,12 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
-public class User extends BaseEntity {
+public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "user_seq_id")
-    @SequenceGenerator(name = "user_seq_id",sequenceName = "user_seq_id",allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
 
     @NaturalId
