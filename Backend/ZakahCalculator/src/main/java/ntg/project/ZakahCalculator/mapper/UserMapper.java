@@ -1,5 +1,6 @@
 package ntg.project.ZakahCalculator.mapper;
 
+<<<<<<< HEAD
 import ntg.project.ZakahCalculator.dto.request.ProfileUpdateRequest;
 import ntg.project.ZakahCalculator.dto.request.RegistrationRequest;
 import ntg.project.ZakahCalculator.dto.response.UserResponse;
@@ -33,4 +34,7 @@ public interface UserMapper {
     @Mapping(target = "userType",
             expression = "java(user.getRoles().get(0).getName())")
     UserResponse toResponse(User user);
+=======
+public interface UserMapper {
+>>>>>>> 014a1fd10945a19fe5b84da52a2dd6ccb772e5ba
 }

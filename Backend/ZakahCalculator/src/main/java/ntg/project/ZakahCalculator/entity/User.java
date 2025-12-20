@@ -20,7 +20,11 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+<<<<<<< HEAD
 public class User extends BaseEntity implements UserDetails {
+=======
+public class User extends BaseEntity {
+>>>>>>> 014a1fd10945a19fe5b84da52a2dd6ccb772e5ba
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "user_seq_id")

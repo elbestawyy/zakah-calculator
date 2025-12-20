@@ -1,5 +1,6 @@
 package ntg.project.ZakahCalculator.mapper;
 
+<<<<<<< HEAD
 import ntg.project.ZakahCalculator.dto.response.VerifyOtpResponse;
 import ntg.project.ZakahCalculator.entity.OtpCode;
 import org.mapstruct.Mapper;
@@ -26,4 +27,7 @@ public interface OtpCodeMapper {
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "expiresAt", ignore = true)
     OtpCode toEntity(User user, String code, OtpType type);
+=======
+public interface OtpCodeMapper {
+>>>>>>> 014a1fd10945a19fe5b84da52a2dd6ccb772e5ba
 }
