@@ -52,9 +52,9 @@ public class EmailServiceImpl implements EmailService {
 
             helper.setFrom("madel25810@gmail.com");
             helper.setTo(to);
-            helper.setSubject(OtpType.PASSWORD_RESET.name());
+            helper.setSubject(otpType.getDisplayName());
 
-            String template = templateEngine.process("forget_password", context);
+            String template = templateEngine.process(otpType.getTemplateFile(), context);
             helper.setText(template, true);
             mailSender.send(mimeMessage);
             return CompletableFuture.completedFuture("Email sent successfully to: " + to);

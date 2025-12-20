@@ -33,7 +33,7 @@ public class User extends BaseEntity implements UserDetails {
     private String password;
     private boolean isDeleted = false ;
     private LocalDateTime deletionDate;
-
+    private boolean isEnabled = false;
 
 
 /*--------------------------------Relation------------------------------------*/
@@ -59,5 +59,9 @@ public class User extends BaseEntity implements UserDetails {
         return email;
     }
 
+    @Override
+    public boolean isEnabled() {
+        return isEnabled;
+    }
 }
 

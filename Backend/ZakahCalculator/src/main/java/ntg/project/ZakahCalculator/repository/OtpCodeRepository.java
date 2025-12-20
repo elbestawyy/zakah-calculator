@@ -1,5 +1,6 @@
 package ntg.project.ZakahCalculator.repository;
 
+import jakarta.validation.constraints.NotBlank;
 import ntg.project.ZakahCalculator.entity.OtpCode;
 import ntg.project.ZakahCalculator.entity.util.OtpType;
 import ntg.project.ZakahCalculator.entity.User;
@@ -12,4 +13,8 @@ public interface OtpCodeRepository extends JpaRepository<OtpCode, Long> {
     Optional<OtpCode> findByUserIdAndTypeAndUsedFalse(Long userId, OtpType type);
 
     Optional<OtpCode> findByCodeAndTypeAndUsedFalse(String code, OtpType type);
+
+    Optional<OtpCode> findByResetToken(String resetToken);
+
+    Optional<OtpCode> findByUserIdAndType(Long userId, OtpType otpType);
 }

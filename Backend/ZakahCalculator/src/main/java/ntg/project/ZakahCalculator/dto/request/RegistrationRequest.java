@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import ntg.project.ZakahCalculator.entity.util.UserType;
 
 @Getter
 @Setter
@@ -38,4 +39,7 @@ public class RegistrationRequest {
     @NotBlank(message = "VALIDATION.REGISTRATION.PASSWORD.NOT_BLANK")
     @Size(min = 8, max = 50, message = "VALIDATION.REGISTRATION.PASSWORD.SIZE")
     private String confirmPassword;
+
+
+    private UserType userType;
 }

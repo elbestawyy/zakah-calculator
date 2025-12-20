@@ -2,6 +2,7 @@ package ntg.project.ZakahCalculator.dto.response;
 
 
 import lombok.*;
+import ntg.project.ZakahCalculator.entity.util.UserType;
 
 @NoArgsConstructor
 @Getter
@@ -10,6 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 public class UserResponse {
     private Long userId;
-    private String username;
+    private String email;
     private String fullName;
+    private UserType userType;
 }

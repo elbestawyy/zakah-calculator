@@ -39,6 +39,9 @@ public class OtpCode {
     @Column(nullable = false)
     private LocalDateTime expiresAt;
 
+    @Column(unique = true)
+    private String resetToken;
+
     @PrePersist
     protected void onCreate() {
         if (createdAt == null) {

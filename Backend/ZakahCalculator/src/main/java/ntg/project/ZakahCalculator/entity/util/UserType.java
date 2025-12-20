@@ -1,7 +1,6 @@
 package ntg.project.ZakahCalculator.entity.util;
 
 public enum UserType {
-    INDIVIDUAL,
-    COMPANY,
-    ADMIN
+    ROLE_INDIVIDUAL,
+    ROLE_COMPANY
 }

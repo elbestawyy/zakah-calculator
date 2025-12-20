@@ -1,4 +1,4 @@
-package ntg.project.ZakahCalculator.Scheduled;
+package ntg.project.ZakahCalculator.scheduled;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

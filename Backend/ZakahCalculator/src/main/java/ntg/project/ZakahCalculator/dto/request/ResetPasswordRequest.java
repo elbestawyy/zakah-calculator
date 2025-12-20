@@ -12,8 +12,8 @@ import lombok.*;
 @Builder
 public class ResetPasswordRequest {
 
-    @Pattern(regexp = "^[0-9]{6}$", message = "OTP must be exactly 6 digits")
-    private String otp;
+    @NotBlank(message = "VALIDATION.RESET_PASSWORD.RESET_TOKEN.NOT_BLANK")
+    private String resetToken;
 
     @NotBlank(message = "VALIDATION.RESET_PASSWORD.PASSWORD.NOT_BLANK")
     @Size(min = 8, max = 50, message = "VALIDATION.REGISTRATION.PASSWORD.SIZE")

@@ -4,20 +4,23 @@ package ntg.project.ZakahCalculator.service;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import ntg.project.ZakahCalculator.dto.request.*;
-import ntg.project.ZakahCalculator.dto.response.AuthenticationResponse;
-import ntg.project.ZakahCalculator.dto.response.ResetPasswordResponse;
+import ntg.project.ZakahCalculator.dto.response.*;
 
 public interface AuthenticationService {
     AuthenticationResponse login(AuthenticationRequest request);
 
     void register(RegistrationRequest request);
 
+    @Transactional
+    AuthenticationResponse verifyAccount(VerifyAccountRequest request);
+
     AuthenticationResponse refreshToken(RefreshRequest request);
 
-    ResetPasswordResponse forgetPassword(ForgetPasswordRequest request) throws MessagingException;
+    ForgotPasswordResponse forgetPassword(ForgetPasswordRequest request) throws MessagingException;
 
+    @Transactional
+    VerifyOtpResponse verifyOtp(VerifyOtpRequest request);
 
-    // TODO -> (Wait frontend)
     @Transactional
     ResetPasswordResponse resetPassword(ResetPasswordRequest request);
 }
