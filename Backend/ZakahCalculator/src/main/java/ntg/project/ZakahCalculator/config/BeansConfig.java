@@ -22,5 +22,4 @@ public class BeansConfig {
     public AuthenticationManager authenticationManager(final AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
-
 }

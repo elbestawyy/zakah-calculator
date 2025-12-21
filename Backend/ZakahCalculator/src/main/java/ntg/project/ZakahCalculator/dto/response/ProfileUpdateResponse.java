@@ -2,12 +2,11 @@ package ntg.project.ZakahCalculator.dto.response;
 
 import lombok.*;
 
+@NoArgsConstructor
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
-public class ForgotPasswordResponse {
-    private String message;
-    private String email;
+public class ProfileUpdateResponse {
+    private String fullName;
 }

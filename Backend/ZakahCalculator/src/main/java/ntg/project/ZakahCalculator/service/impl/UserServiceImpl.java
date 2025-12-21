@@ -4,12 +4,14 @@ import lombok.RequiredArgsConstructor;
 import ntg.project.ZakahCalculator.dto.request.ChangePasswordRequest;
 import ntg.project.ZakahCalculator.dto.request.ProfileUpdateRequest;
 import ntg.project.ZakahCalculator.dto.response.DeleteAccountResponse;
+import ntg.project.ZakahCalculator.dto.response.ProfileUpdateResponse;
 import ntg.project.ZakahCalculator.entity.User;
 import ntg.project.ZakahCalculator.exception.BusinessException;
 import ntg.project.ZakahCalculator.exception.ErrorCode;
 import ntg.project.ZakahCalculator.mapper.UserMapper;
 import ntg.project.ZakahCalculator.repository.UserRepository;
 import ntg.project.ZakahCalculator.service.UserService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,8 +34,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void changePassword(ChangePasswordRequest request, Long userId) {
-
+    public void changePassword(ChangePasswordRequest request) {
+        Long userId = getUserId();
         if (!request.getNewPassword().equals(request.getConfirmNewPassword())) {
             throw new BusinessException(ErrorCode.PASSWORD_MISMATCH);
         }
@@ -49,11 +51,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateProfileInfo(ProfileUpdateRequest request, Long userId) {
-
+    public ProfileUpdateResponse updateProfileInfo(ProfileUpdateRequest request) {
+        Long userId = getUserId();
         User user = findById(userId);
         userMapper.updateUserFromRequest(request, user);
-        userRepository.save(user);
+        User updatedUser =userRepository.save(user);
+        return userMapper.userToProfileUpdateResponse(updatedUser);
     }
 
     @Override
@@ -63,8 +66,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public DeleteAccountResponse softDeleteUser(Long userId) {
-
+    public DeleteAccountResponse softDeleteUser() {
+        Long userId = getUserId();
         User user = findById(userId);
 
         if (user.isDeleted()) {
@@ -85,8 +88,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void restoreUser(Long userId) {
-
+    public void restoreUser() {
+        Long userId = getUserId();
         User user = findById(userId);
 
         if (!user.isDeleted()) {
@@ -96,5 +99,12 @@ public class UserServiceImpl implements UserService {
         user.setDeleted(false);
         user.setDeletionDate(null);
         userRepository.save(user);
+    }
+
+    private Long getUserId(){
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmailIgnoreCase(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
+        return user.getId();
     }
 }

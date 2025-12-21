@@ -16,7 +16,7 @@ public interface AuthenticationService {
 
     AuthenticationResponse refreshToken(RefreshRequest request);
 
-    ForgotPasswordResponse forgetPassword(ForgetPasswordRequest request) throws MessagingException;
+    ForgetPasswordResponse forgetPassword(ForgetPasswordRequest request) throws MessagingException;
 
     @Transactional
     VerifyOtpResponse verifyOtp(VerifyOtpRequest request);

@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
 
@@ -36,17 +36,17 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.refreshToken(request));
     }
 
-    @PostMapping("/forget-password")
-    public ResponseEntity<ForgotPasswordResponse> forgetPassword(@RequestBody ForgetPasswordRequest request) throws MessagingException {
+    @PostMapping("/password/forget-password")
+    public ResponseEntity<ForgetPasswordResponse> forgetPassword(@RequestBody ForgetPasswordRequest request) throws MessagingException {
         return ResponseEntity.ok(authenticationService.forgetPassword(request));
     }
 
-    @PostMapping("/verify-otp")
+    @PostMapping("/password/verify-otp")
     public ResponseEntity<VerifyOtpResponse> verifyOtp(@RequestBody VerifyOtpRequest request) {
         return ResponseEntity.ok(authenticationService.verifyOtp(request));
     }
 
-    @PostMapping("/reset-password")
+    @PostMapping("/password/reset-password")
     public ResponseEntity<ResetPasswordResponse> resetPassword(@RequestBody ResetPasswordRequest request) {
         return ResponseEntity.ok(authenticationService.resetPassword(request));
     }

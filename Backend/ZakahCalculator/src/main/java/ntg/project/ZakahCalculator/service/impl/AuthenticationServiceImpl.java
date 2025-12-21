@@ -142,7 +142,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     @Transactional
-    public ForgotPasswordResponse forgetPassword(ForgetPasswordRequest request) {
+    public ForgetPasswordResponse forgetPassword(ForgetPasswordRequest request) {
 
         User user = userRepository.findByEmailIgnoreCase(request.getEmail())
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
@@ -161,8 +161,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 OtpType.PASSWORD_RESET,
                 otp.getCode()
         );
-
-        // استخدام UserMapper بدلاً من PasswordMapper
         return userMapper.toForgotPasswordResponse(user);
     }
 

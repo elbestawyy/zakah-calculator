@@ -13,8 +13,7 @@ spring:
     host: "smtp.gmail.com"
     port: "587"
     username: "madel25810@gmail.com"
-    password: "lfhuuuijgulvyvyx
-"
+    password: "jldxtrhklznvqxcy"
     properties:
       mail:
         smtp:
@@ -30,7 +29,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     database: POSTGRESQL
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true

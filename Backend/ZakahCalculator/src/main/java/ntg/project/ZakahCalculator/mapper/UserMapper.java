@@ -35,6 +35,12 @@ public class UserMapper {
         }
     }
 
+    public ProfileUpdateResponse userToProfileUpdateResponse(User user) {
+        return ProfileUpdateResponse.builder()
+                .fullName(user.getName())
+                .build();
+    }
+
     /* ================= Entity → Response ================= */
     public UserResponse toResponse(User user) {
         if (user == null) return null;
@@ -65,8 +71,8 @@ public class UserMapper {
     }
 
     /* ================= Forgot & Reset Password ================= */
-    public ForgotPasswordResponse toForgotPasswordResponse(User user) {
-        return ForgotPasswordResponse.builder()
+    public ForgetPasswordResponse toForgotPasswordResponse(User user) {
+        return ForgetPasswordResponse.builder()
                 .email(user.getEmail())
                 .message("Password reset OTP sent successfully")
                 .build();

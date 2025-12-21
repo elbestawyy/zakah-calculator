@@ -1,0 +1,4 @@
+export enum UserType {
+  ROLE_INDIVIDUAL = 'ROLE_INDIVIDUAL',
+  ROLE_COMPANY = 'ROLE_COMPANY'
+}
