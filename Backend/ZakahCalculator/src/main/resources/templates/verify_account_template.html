@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Password Reset</title>
+    <title>Verify Your Account</title>
     <style type="text/css">
         body, table, td, p {
             font-family: Arial, Helvetica, sans-serif;
@@ -19,7 +19,7 @@
         .content {
             padding: 20px;
         }
-        .activation-code {
+        .verification-code {
             font-size: 32px;
             font-weight: bold;
             text-align: center;
@@ -28,7 +28,7 @@
             margin: 20px 0;
             color: #628141;
             border-radius: 5px;
-            letter-spacing: 8px;
+            letter-spacing: 8px
         }
         .footer {
             color: #666666;
@@ -44,7 +44,7 @@
             .container {
                 width: 100% !important;
             }
-            .activation-code {
+            .verification-code {
                 font-size: 24px !important;
                 padding: 12px !important;
             }
@@ -63,15 +63,16 @@
                 </tr>
                 <tr>
                     <td bgcolor="#ffffff" class="content">
-                        <h1 style="color: #333333; margin-top: 0; text-align: center;">Reset Password</h1>
+                        <h1 style="color: #333333; margin-top: 0; text-align: center;">Verify Your Account</h1>
 
                         <p style="margin-bottom: 15px;" th:text="'Hello ' + ${username} + ','">Hello User,</p>
 
-                        <p style="margin-bottom: 20px;">Welcome to our Social Media App! Please use the following activation code to reset your password:</p>
+                        <p style="margin-bottom: 20px;">Thank you for registering with our Zakah Calculator! To complete your account setup and start using our platform, please verify your email address using the following verification code:</p>
 
-                        <div class="activation-code">
-                            <span th:text="${activation_code}">123456</span>
+                        <div class="verification-code">
+                            <span th:text="${verification_code}">123456</span>
                         </div>
+
                         <p style="margin-bottom: 10px;"><strong>This verification code is valid for 5 minutes.</strong></p>
                         <p style="color: #666666; font-size: 13px; margin-bottom: 20px;">If you didn't create an account with us, please ignore this email or contact our support team.</p>
                         <p style="color: #666666; font-size: 13px;">For security reasons, please do not share this code with anyone.</p>
@@ -79,7 +80,7 @@
                 </tr>
                 <tr>
                     <td bgcolor="#f9f9f9" class="footer" style="text-align: center;">
-                        <img src="/src/main/resources/static/images/logo-withoutBackground.png" alt="Company Logo" style="width: 150px; margin: auto;" >
+                        <img src="/src/main/resources/static/images/logo-withoutBackground.png" alt="Company Logo" style="width: 150px; margin: auto;">
                         <p style="margin: 10px 0 0 0;">&copy; NTG Clarity. All rights reserved.</p>
                         <p style="margin: 5px 0 0 0;">This is an automated message, please do not reply to this email.</p>
                     </td>
