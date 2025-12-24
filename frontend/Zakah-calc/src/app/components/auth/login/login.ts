@@ -74,7 +74,13 @@ export class Login implements OnInit {
           this.router.navigate(['/verify-otp'], {
             queryParams: { email: request.email }
           });
-        }else {
+        }
+        // else if (err.messages === 403){
+        //   this.router.navigate(['/verify-otp'], {
+        //     queryParams: { email: request.email }
+        //   });
+        // }
+        else {
           this.serverError.set('حدث خطأ غير متوقع، حاول مرة أخرى');
         }
         this.isLoading.set(false);

@@ -10,7 +10,7 @@ import {DeleteAccountResponse, ProfileUpdateResponse} from '../../models/respons
 })
 export class UserService {
 
-  private readonly BASE_URL = '/api/users';
+  private readonly BASE_URL = 'http://localhost:8080/users';
 
   constructor(private http: HttpClient) {}
 

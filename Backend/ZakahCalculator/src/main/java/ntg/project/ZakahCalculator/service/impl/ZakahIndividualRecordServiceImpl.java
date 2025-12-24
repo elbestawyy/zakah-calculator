@@ -19,6 +19,7 @@ public class ZakahIndividualRecordServiceImpl
 
     @Override
     public ZakahIndividualRecord save(ZakahIndividualRecord record) {
+
         return zakahIndividualRecordRepository.save(record);
     }
 
