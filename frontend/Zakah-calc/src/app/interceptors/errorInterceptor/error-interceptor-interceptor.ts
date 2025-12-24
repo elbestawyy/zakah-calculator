@@ -1,19 +1,24 @@
-import { inject } from '@angular/core';
+import { inject, Injector } from '@angular/core';
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { catchError, throwError } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
-  const toastr = inject(ToastrService);
+  const injector = inject(Injector); // ⬅️ جيب Injector
+
+  // Don't inject ToastrService here directly
+  // const toastr = inject(ToastrService); // ❌ مش هنا
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
+      // جيب ToastrService داخل الـ catchError
+      const toastr = injector.get(ToastrService); // ✅ هنا
+
       let userMessage = 'حدث خطأ غير معروف، يرجى المحاولة لاحقًا.';
 
       // Validation Errors من الـ backend
       if (error.status === 400 && error.error?.validationErrors?.length) {
         const messages = error.error.validationErrors.map((ve: any) => {
-          // تحويل رموز الـ backend إلى نصوص مفهومة
           switch (ve.code) {
             case 'VALIDATION.AUTHENTICATION.EMAIL.NOT_BLANK':
               return 'الرجاء إدخال البريد الإلكتروني.';
@@ -54,7 +59,6 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
           }
         });
 
-        // نجمع كل الرسائل ونعرضها في toast واحد
         toastr.error(messages.join('<br>'), 'أخطاء في الإدخال', {
           enableHtml: true
         });
@@ -90,9 +94,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         toastr.error(userMessage, `خطأ ${error.status}`);
       }
 
-      // Console debug
       console.error('HTTP Error:', error);
-
       return throwError(() => error);
     })
   );

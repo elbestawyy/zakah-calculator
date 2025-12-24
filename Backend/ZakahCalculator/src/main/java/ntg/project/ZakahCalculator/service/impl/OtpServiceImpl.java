@@ -81,7 +81,18 @@ public class OtpServiceImpl implements OtpService {
         User user = userRepository.findByEmailIgnoreCase(email)
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 
-        generateAndSend(user, OtpType.EMAIL_VERIFICATION);
+        OtpCode otp = otpCodeRepository.findByUserId(user.getId()).orElse(new OtpCode());
+        otp.setCode(generateOtp());
+        otpCodeRepository.save(otp);
+
+        emailService.sendEmail(
+                user.getEmail(),
+                user.getName(),
+                otp.getType(),
+                otp.getCode()
+        );
+
+        log.info("OTP sent to {} for {}", user.getEmail(), otp.getType());
     }
 
     private String generateOtp() {

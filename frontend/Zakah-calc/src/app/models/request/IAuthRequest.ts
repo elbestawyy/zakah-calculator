@@ -13,13 +13,11 @@ export interface ForgetPasswordRequest {
   email: string;
 }
 
-
 export interface RefreshRequest {
   refreshToken: string;
 }
 
 import {UserType} from '../enums/UserType';
-
 
 export interface RegistrationRequest {
   firstName: string;
@@ -29,7 +27,6 @@ export interface RegistrationRequest {
   confirmPassword: string;
   userType?: UserType;
 }
-
 
 export interface ResetPasswordRequest {
   resetToken: string;
@@ -41,10 +38,10 @@ export interface VerifyAccountRequest {
   otpCode: string;
 }
 
-
 export interface VerifyOtpRequest {
   otp: string;
 }
+
 export interface ProfileUpdateRequest {
   firstName?: string;
   lastName?: string;

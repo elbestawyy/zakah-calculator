@@ -6,6 +6,8 @@ import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/
 import { routes } from './app.routes';
 import {authInterceptor} from './interceptors/auth-interceptor/auth-interceptor-interceptor';
 import {refreshTokenInterceptor} from './interceptors/refreshTokenInterceptor/refresh-token-interceptor-interceptor';
+import { error } from 'console';
+import { errorInterceptor } from './interceptors/errorInterceptor/error-interceptor-interceptor';
 
 
 export const appConfig: ApplicationConfig = {
@@ -17,7 +19,8 @@ export const appConfig: ApplicationConfig = {
       withFetch(),
       withInterceptors([
         authInterceptor,
-        refreshTokenInterceptor
+        refreshTokenInterceptor,
+        errorInterceptor
       ])
     )
   ]

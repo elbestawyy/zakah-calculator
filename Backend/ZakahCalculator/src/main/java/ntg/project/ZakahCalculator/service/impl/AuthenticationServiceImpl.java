@@ -55,7 +55,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = (User) auth.getPrincipal();
 
         if (!user.isVerified()) {
-            otpService.generateAndSend(user, OtpType.EMAIL_VERIFICATION);
+            otpService.resendVerificationOtp(user.getEmail());
             throw new BusinessException(ErrorCode.ACCOUNT_NOT_VERIFIED);
         }
         return generateTokens(user);
