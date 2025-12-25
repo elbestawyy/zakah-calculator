@@ -1,12 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { interval, Subject } from 'rxjs';
-import { map, takeUntil, takeWhile, tap } from 'rxjs/operators';
+import {interval, Subject, takeWhile} from 'rxjs';
+import { takeUntil, map, tap } from 'rxjs/operators';
 
 import { AuthService } from '../../../services/auth-service/auth.service';
 import { VerifyAccountRequest } from '../../../models/request/IAuthRequest';
+import {environment} from '../../../../environments/environment';
 
 @Component({
   selector: 'app-verify-otp',
@@ -18,20 +19,21 @@ import { VerifyAccountRequest } from '../../../models/request/IAuthRequest';
 export class VerifyOtpComponent implements OnInit, OnDestroy {
 
   otpForm!: FormGroup;
-  isLoading = false;
-  errorMessage = '';
+  isLoading = signal(false);
+  errorMessage = signal('');
   email!: string;
+  secretKey: string = environment.secretKey;
 
-  // 🔥 RxJS state
-  resendCounter$!: any;
-  resendDisabled = true;
+  resendCounter = signal(60);
+  resendDisabled = signal(true);
 
   private destroy$ = new Subject<void>();
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -39,30 +41,42 @@ export class VerifyOtpComponent implements OnInit, OnDestroy {
       otpCode: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(6)]]
     });
 
-    this.email = history.state?.email;
-    this.startResendTimer();
+    // 🔐 قراءة وفك تشفير الإيميل من queryParam
+    this.activatedRoute.queryParams.subscribe(params => {
+      const encryptedEmail = params['email'];
+      if (encryptedEmail) {
+        const bytes = CryptoJS.AES.decrypt(encryptedEmail, this.secretKey);
+        this.email = bytes.toString(CryptoJS.enc.Utf8);
+      }
+      this.startResendTimer();
+    });
   }
 
-  // ✅ RxJS timer
+  // 🔹 RxJS timer + Signals
   startResendTimer(): void {
-    this.resendDisabled = true;
+    this.resendDisabled.set(true);
+    this.resendCounter.set(30);
 
-    this.resendCounter$ = interval(1000).pipe(
-      map(i => 59 - i),
-      takeWhile(v => v >= 0),
-      tap({
-        complete: () => this.resendDisabled = false
-      }),
+    interval(1000).pipe(
+      map(i => 30 - i - 1),           // 59,58,...,0
+      takeWhile(val => val >= 0),     // stop عند الصفر
+      tap(val => this.resendCounter.set(val)),
       takeUntil(this.destroy$)
-    );
+    ).subscribe({
+      complete: () => this.resendDisabled.set(false) // بعد انتهاء العد
+    });
   }
+
 
   resendOtp(): void {
-    if (!this.email || this.resendDisabled) return;
+    if (!this.email || this.resendDisabled()) return;
 
     this.authService.resendOtp({ email: this.email }).subscribe({
       next: () => this.startResendTimer(),
-      error: () => this.errorMessage = 'حدث خطأ أثناء إعادة إرسال الرمز.'
+      error: () => {
+        this.startResendTimer();
+        this.errorMessage.set('حدث خطأ أثناء إعادة إرسال الرمز.')
+      }
     });
   }
 
@@ -72,8 +86,8 @@ export class VerifyOtpComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.isLoading = true;
-    this.errorMessage = '';
+    this.isLoading.set(true);
+    this.errorMessage.set('');
 
     const request: VerifyAccountRequest = {
       otpCode: this.otpForm.value.otpCode
@@ -82,10 +96,10 @@ export class VerifyOtpComponent implements OnInit, OnDestroy {
     this.authService.verifyAccount(request).subscribe({
       next: () => this.router.navigate(['/intro']),
       error: (err) => {
-        this.errorMessage = err?.error?.message || 'حدث خطأ أثناء التحقق من الحساب.';
-        this.isLoading = false;
+        this.errorMessage.set(err?.error?.message || 'حدث خطأ أثناء التحقق من الحساب.');
+        this.isLoading.set(false);
       },
-      complete: () => this.isLoading = false
+      complete: () => this.isLoading.set(false)
     });
   }
 

@@ -6,14 +6,15 @@
       <p class="text-slate-500 mt-2 mb-6">سجل الدخول للوصول إلى لوحة التحكم الخاصة بك.</p>
 
       <form [formGroup]="otpForm" (ngSubmit)="submitOtp()" class="space-y-4">
+        <!-- OTP Input -->
         <div>
           <div class="flex justify-center items-center mb-2">
             <label for="otp" class="font-medium text-slate-700">رمز التحقق</label>
           </div>
           <div class="relative">
             <input type="text" id="otp" formControlName="otpCode"
-              class="w-full py-2.5 px-4 bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500"
-              placeholder="ادخل رمز التحقق">
+                   class="w-full py-2.5 px-4 bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500"
+                   placeholder="ادخل رمز التحقق">
           </div>
           <div class="text-red-500 text-sm mt-1" *ngIf="otpForm.get('otpCode')?.touched && otpForm.get('otpCode')?.invalid">
             <span *ngIf="otpForm.get('otpCode')?.errors?.['required']">الرجاء إدخال رمز التحقق.</span>
@@ -22,24 +23,27 @@
           </div>
         </div>
 
+        <!-- Submit Button -->
         <button type="submit"
-          class="w-full py-3 px-4 bg-slate-800 text-white font-semibold rounded-lg hover:bg-slate-900 transition-colors cursor-pointer"
-          [disabled]="isLoading">
-          {{ isLoading ? 'جارٍ التحقق...' : 'تأكيد' }}
+                class="w-full py-3 px-4 bg-slate-800 text-white font-semibold rounded-lg hover:bg-slate-900 transition-colors cursor-pointer"
+                [disabled]="isLoading()">
+          {{ isLoading() ? 'جارٍ التحقق...' : 'تأكيد' }}
         </button>
 
-        <div *ngIf="errorMessage" class="text-red-500 text-center mt-2">
-          {{ errorMessage }}
+        <!-- Error Message -->
+        <div *ngIf="errorMessage()" class="text-red-500 text-center mt-2">
+          {{ errorMessage() }}
         </div>
+
+        <!-- Resend OTP -->
         <div class="text-center mt-4">
           <button
             type="button"
             class="text-sm text-emerald-600 hover:underline disabled:text-gray-400"
-            [disabled]="resendDisabled"
-            (click)="resendOtp()"
-          >
+            [disabled]="resendDisabled()"
+            (click)="resendOtp()">
             إعادة إرسال الرمز
-            <span *ngIf="resendDisabled">({{ resendCounter$ | async }})</span>
+            <span *ngIf="resendDisabled()">({{ resendCounter() }})</span>
           </button>
         </div>
       </form>

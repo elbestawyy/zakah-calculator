@@ -17,6 +17,7 @@ import {
   VerifyAccountRequest,
   VerifyOtpRequest
 } from '../../models/request/IAuthRequest';
+import {environment} from '../../../environments/environment';
 
 
 @Injectable({
@@ -24,8 +25,7 @@ import {
 })
 export class AuthService implements OnInit{
 
-  private readonly BASE_URL = 'http://localhost:8080/auth';
-
+  private readonly BASE_URL =  `${environment.apiUrl}/auth`;
 
   isLoggedIn = signal<boolean>(false);
 
@@ -58,7 +58,10 @@ this.isLoggedIn.set(!!AuthStorageService.getAccessToken());
     return this.http
       .post<AuthenticationResponse>(`${this.BASE_URL}/verify-account`, request)
       .pipe(
-        tap(res => AuthStorageService.saveTokens(res))
+        tap(res => {
+          AuthStorageService.saveTokens(res)
+          this.isLoggedIn.set(true);
+        })
       );
   }
 

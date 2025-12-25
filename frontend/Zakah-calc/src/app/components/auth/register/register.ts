@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth-service/auth.service';
 import { RegistrationRequest } from '../../../models/request/IAuthRequest';
 import { UserType } from '../../../models/enums/UserType';
+import {environment} from '../../../../environments/environment';
 
 @Component({
   selector: 'app-register',
@@ -16,6 +17,8 @@ import { UserType } from '../../../models/enums/UserType';
 })
 export class Register implements OnInit {
 
+
+  secretKey: string = environment.secretKey;
   registerForm!: FormGroup;
 
   constructor(
@@ -74,8 +77,9 @@ export class Register implements OnInit {
 
     this.authService.register(request).subscribe({
       next: () => {
+        const encryptedEmail = CryptoJS.AES.encrypt(request.email, this.secretKey).toString();
         this.router.navigate(['/verify-otp'], {
-          queryParams: { email: request.email }
+          queryParams: { email: encryptedEmail }
         });
       },
       error: () => {
