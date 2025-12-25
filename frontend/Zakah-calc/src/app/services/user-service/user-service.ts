@@ -4,13 +4,15 @@ import { Observable, tap } from 'rxjs';
 import { AuthStorageService } from '../storage-service/StorageService';
 import { ChangePasswordRequest, ProfileUpdateRequest } from '../../models/request/IAuthRequest';
 import { DeleteAccountResponse, ProfileUpdateResponse } from '../../models/response/IAuthResponse';
+import {environment} from '../../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  private readonly BASE_URL = 'http://localhost:8080/users';
+  private readonly BASE_URL =  `${environment.apiUrl}/users`;
 
   constructor(private http: HttpClient) {}
 

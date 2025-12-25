@@ -8,6 +8,7 @@ import { takeUntil, map, tap } from 'rxjs/operators';
 import { AuthService } from '../../../services/auth-service/auth.service';
 import { VerifyAccountRequest } from '../../../models/request/IAuthRequest';
 import {environment} from '../../../../environments/environment';
+import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-verify-otp',

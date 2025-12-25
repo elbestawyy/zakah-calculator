@@ -8,6 +8,7 @@ import { AuthService } from '../../../services/auth-service/auth.service';
 import { RegistrationRequest } from '../../../models/request/IAuthRequest';
 import { UserType } from '../../../models/enums/UserType';
 import {environment} from '../../../../environments/environment';
+import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-register',

@@ -3,6 +3,8 @@ import * as CryptoJS from 'crypto-js';
 
 import {UserType} from '../../models/enums/UserType';
 import {AuthenticationResponse, UserResponse} from '../../models/response/IAuthResponse';
+import {environment} from '../../../environments/environment';
+
 
 const ACCESS_TOKEN_KEY = 'access_token';
 const REFRESH_TOKEN_KEY = 'refresh_token';
@@ -12,7 +14,7 @@ const USER_KEY = 'auth_user';
   providedIn: 'root'
 })
 export class AuthStorageService {
-  private static readonly ENCRYPTION_KEY = 'my-secret-key-1234567890123456';
+  private static readonly ENCRYPTION_KEY = environment.secretKey;
 
   private static encrypt(data: string): string {
     if (!data) return '';
