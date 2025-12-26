@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("Records/Company")
 @RequiredArgsConstructor
 public class CompanyRecordController {
-    private final ZakahCompanyRecordServiceImpl zakahCompanyRecordService;
+    private final ZakahCompanyRecordService zakahCompanyRecordService;
 
     //Get all balance sheet records by user id
     @GetMapping("/history/{userId}")

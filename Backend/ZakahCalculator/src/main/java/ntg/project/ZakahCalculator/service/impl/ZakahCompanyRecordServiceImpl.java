@@ -10,6 +10,7 @@ import ntg.project.ZakahCalculator.repository.ZakahCompanyRecordRepository;
 import ntg.project.ZakahCalculator.service.ZakahCompanyRecordService;
 import lombok.RequiredArgsConstructor;
 import ntg.project.ZakahCalculator.util.UserUtil;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +30,6 @@ public class ZakahCompanyRecordServiceImpl implements ZakahCompanyRecordService 
     private final ZakahCompanyRecordRepository zakahCompanyRecordRepository;
     private final UserRepository userRepository;
     private final ZakahCompanyRecordMapper zakahCompanyRecordMapper;
-    private final ZakahCompanyRecordService zakahCompanyRecordService;
 
     //Constants
     private static final BigDecimal ZAKAH_RATE = new BigDecimal("0.025"); // 2.5%

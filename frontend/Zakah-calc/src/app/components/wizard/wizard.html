@@ -1,1 +1,229 @@
-<p>wizard works!</p>
+<div class="flex flex-col items-center justify-start p-4 pt-10 sm:pt-16">
+  <div class="w-full max-w-2xl">
+    <!-- Stepper -->
+    <div class="mb-8">
+      <div class="flex items-center">
+        @for (step of steps(); track step; let i = $index) {
+        <div class="flex items-center text-emerald-600 relative">
+          <div
+            class="rounded-full transition duration-500 ease-in-out h-12 w-12 flex items-center justify-center border-2"
+            [class.bg-emerald-600]="i <= currentStep()"
+            [class.text-white]="i <= currentStep()"
+            [class.border-emerald-600]="i <= currentStep()"
+            [class.border-slate-300]="i > currentStep()"
+            [class.text-slate-500]="i > currentStep()"
+          >
+            @if (i < currentStep()) {
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+            } @else {
+            <span>{{ i + 1 }}</span>
+            }
+          </div>
+          <div class="absolute top-0 -ms-10 text-center mt-16 w-32 text-xs font-medium uppercase"
+               [class.text-emerald-600]="i <= currentStep()"
+               [class.text-slate-400]="i > currentStep()">
+            {{ step }}
+          </div>
+        </div>
+        @if (!$last) {
+        <div class="flex-auto border-t-2 transition duration-500 ease-in-out"
+             [class.border-emerald-600]="i < currentStep()"
+             [class.border-slate-300]="i >= currentStep()">
+        </div>
+        }
+        }
+      </div>
+    </div>
+
+    <!-- Step Content -->
+    <div class="bg-white rounded-xl shadow-lg p-6 sm:p-8 animate-slide-in-right">
+      @switch (steps()[currentStep()]) {
+      @case ('البداية') {
+      <h2 class="text-2xl font-bold text-slate-800 mb-2">كيف تود البدء؟</h2>
+      <p class="text-slate-500 mb-6">اختر الطريقة التي تفضلها لإدخال بياناتك المالية.</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+        <!-- Manual Entry -->
+        <button (click)="next()" class="group border-2 border-slate-200 rounded-lg p-6 text-center transition-all duration-300 hover:border-emerald-500 hover:bg-emerald-50 focus:outline-none focus:ring-2 focus:ring-emerald-400">
+          <div class="flex-shrink-0 w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto transition-all duration-300 group-hover:scale-110">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+          </div>
+          <h3 class="text-lg font-bold text-slate-800 mt-4">إدخال يدوي</h3>
+          <p class="text-slate-500 text-sm mt-1">أدخل بياناتك المالية خطوة بخطوة باستخدام المعالج.</p>
+        </button>
+        <!-- Excel Upload -->
+        <div class="group border-2 border-slate-200 rounded-lg p-6 text-center transition-all duration-300 hover:border-blue-500 hover:bg-blue-50 flex flex-col items-center justify-center">
+          <div class="flex-shrink-0 w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto transition-all duration-300 group-hover:scale-110">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+          </div>
+          <h3 class="text-lg font-bold text-slate-800 mt-4">رفع ملف إكسل</h3>
+          <p class="text-slate-500 text-sm mt-1">قم برفع ميزانيتك العمومية وسنقوم بملء البيانات تلقائيًا.</p>
+          <input type="file" id="excel-upload" (change)="onFileChange($event)" class="hidden" accept=".xlsx, .xls, .csv">
+          <label for="excel-upload" class="mt-4 inline-block px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors cursor-pointer">
+            اختر ملفًا
+          </label>
+          @if (fileName()) {
+          <p class="text-sm text-slate-600 mt-2 truncate">الملف المحدد: {{ fileName() }}</p>
+          }
+        </div>
+      </div>
+      }
+      @case ('التفاصيل') {
+      <!-- Details Step -->
+      <h2 class="text-2xl font-bold text-slate-800 mb-2">تفاصيل الحساب</h2>
+      <p class="text-slate-500 mb-6">يرجى تقديم التاريخ الذي تحسب زكاتك عنه. غالبًا ما يكون هذا هو نهاية سنتك المالية.</p>
+      <div>
+        <label for="balance-date" class="font-semibold text-slate-700 mb-2 block">تاريخ الميزانية العمومية</label>
+        <input type="date" id="balance-date" name="balanceSheetDate" [value]="formData().balanceSheetDate" (change)="onDateChange($event)" class="w-full p-3 bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+      </div>
+
+      }
+      @case ('الأصول') {
+      <!-- Assets Step -->
+      <h2 class="text-2xl font-bold text-slate-800 mb-6">
+        {{ persona() === 'individual' ? 'أصولك' : 'أصول الشركة' }}
+      </h2>
+      <div class="space-y-4">
+        <div class="form-group">
+          <label for="cash" class="flex items-center gap-2 font-semibold text-slate-700 mb-2">النقد والأرصدة البنكية <app-tooltip text="جميع النقد الموجود في اليد وفي الحسابات المصرفية."></app-tooltip></label>
+          <input type="number" name="cash" [value]="formData().cash" (input)="onInputChange($event)" class="w-full p-3 bg-white border border-slate-300 rounded-lg" placeholder="0.00">
+        </div>
+        <div class="form-group">
+          <label for="stocks" class="flex items-center gap-2 font-semibold text-slate-700 mb-2">الأسهم والاستثمارات <app-tooltip text="القيمة السوقية للأسهم المحتفظ بها للمتاجرة أو لتحقيق مكاسب رأسمالية."></app-tooltip></label>
+          <input type="number" name="stocks" [value]="formData().stocks" (input)="onInputChange($event)" class="w-full p-3 bg-white border border-slate-300 rounded-lg" placeholder="0.00">
+        </div>
+        <div class="form-group">
+          <label for="inventory" class="flex items-center gap-2 font-semibold text-slate-700 mb-2">قيمة المخزون <app-tooltip text="قيمة البضائع المتاحة للبيع بسعر التكلفة أو سعر السوق."></app-tooltip></label>
+          <input type="number" name="inventory" [value]="formData().inventory" (input)="onInputChange($event)" class="w-full p-3 bg-white border border-slate-300 rounded-lg" placeholder="0.00">
+        </div>
+        <div class="form-group">
+          <label for="receivables" class="flex items-center gap-2 font-semibold text-slate-700 mb-2">الذمم المدينة (المستحقات) <app-tooltip text="الأموال المستحقة لشركتك أو لك والتي من المرجح تحصيلها."></app-tooltip></label>
+          <input type="number" name="receivables" [value]="formData().receivables" (input)="onInputChange($event)" class="w-full p-3 bg-white border border-slate-300 rounded-lg" placeholder="0.00">
+        </div>
+        <div class="form-group">
+          <label for="goldWeightInGrams" class="flex items-center gap-2 font-semibold text-slate-700 mb-2">قيمة الذهب بالجنيه <app-tooltip text="إجمالي وزن الذهب الذي تملكه والذي حال عليه الحول."></app-tooltip></label>
+          <input type="number" name="goldWeightInGrams" [value]="formData().goldWeightInGrams" (input)="onInputChange($event)" class="w-full p-3 bg-white border border-slate-300 rounded-lg" placeholder="0.00">
+        </div>
+      </div>
+      }
+      @case ('أصول الشركة') {
+      <!-- Assets Step -->
+      <h2 class="text-2xl font-bold text-slate-800 mb-6">
+        {{ persona() === 'individual' ? 'أصولك' : 'أصول الشركة' }}
+      </h2>
+      <div class="space-y-4">
+        <div class="form-group">
+          <label for="cash" class="flex items-center gap-2 font-semibold text-slate-700 mb-2">النقد والأرصدة البنكية <app-tooltip text="جميع النقد الموجود في اليد وفي الحسابات المصرفية."></app-tooltip></label>
+          <label>
+            <input type="number" name="cash" [value]="formData().cash" (input)="onInputChange($event)" class="w-full p-3 bg-white border border-slate-300 rounded-lg" placeholder="0.00">
+          </label>
+        </div>
+        <div class="form-group">
+          <label for="stocks" class="flex items-center gap-2 font-semibold text-slate-700 mb-2">الأسهم والاستثمارات <app-tooltip text="القيمة السوقية للأسهم المحتفظ بها للمتاجرة أو لتحقيق مكاسب رأسمالية."></app-tooltip></label>
+          <input type="number" name="stocks" [value]="formData().stocks" (input)="onInputChange($event)" class="w-full p-3 bg-white border border-slate-300 rounded-lg" placeholder="0.00">
+        </div>
+        <div class="form-group">
+          <label for="inventory" class="flex items-center gap-2 font-semibold text-slate-700 mb-2">قيمة المخزون <app-tooltip text="قيمة البضائع المتاحة للبيع بسعر التكلفة أو سعر السوق."></app-tooltip></label>
+          <input type="number" name="inventory" [value]="formData().inventory" (input)="onInputChange($event)" class="w-full p-3 bg-white border border-slate-300 rounded-lg" placeholder="0.00">
+        </div>
+        <div class="form-group">
+          <label for="receivables" class="flex items-center gap-2 font-semibold text-slate-700 mb-2">الذمم المدينة (المستحقات) <app-tooltip text="الأموال المستحقة لشركتك أو لك والتي من المرجح تحصيلها."></app-tooltip></label>
+          <input type="number" name="receivables" [value]="formData().receivables" (input)="onInputChange($event)" class="w-full p-3 bg-white border border-slate-300 rounded-lg" placeholder="0.00">
+        </div>
+      </div>
+      }
+      @case ('الخصوم') {
+      <!-- Liabilities Step -->
+      <h2 class="text-2xl font-bold text-slate-800 mb-6">التزاماتك</h2>
+      <div class="space-y-4">
+        <div class="form-group">
+          <label for="accountPayable" class="flex items-center gap-2 font-semibold text-slate-700 mb-2">الذمم الدائنة <app-tooltip text="الأموال المستحقة على شركتك أو عليك للآخرين."></app-tooltip></label>
+          <input type="number" name="accountPayable" [value]="formData().accountPayable" (input)="onInputChange($event)" class="w-full p-3 bg-white border border-slate-300 rounded-lg" placeholder="0.00">
+        </div>
+        <div class="form-group">
+          <label for="expenses" class="flex items-center gap-2 font-semibold text-slate-700 mb-2">المصاريف <app-tooltip text="المصاريف التشغيلية المستحقة والواجب دفعها."></app-tooltip></label>
+          <input type="number" name="expenses" [value]="formData().expenses" (input)="onInputChange($event)" class="w-full p-3 bg-white border border-slate-300 rounded-lg" placeholder="0.00">
+        </div>
+        <div class="form-group">
+          <label for="shortTermLoans" class="flex items-center gap-2 font-semibold text-slate-700 mb-2">قروض قصيرة الأجل <app-tooltip text="القروض التي يجب سدادها خلال عام واحد."></app-tooltip></label>
+          <input type="number" name="shortTermLoans" [value]="formData().shortTermLoans" (input)="onInputChange($event)" class="w-full p-3 bg-white border border-slate-300 rounded-lg" placeholder="0.00">
+        </div>
+        <div class="form-group">
+          <label for="longTermDebt" class="flex items-center gap-2 font-semibold text-slate-700 mb-2">ديون طويلة الأجل (الجزء السنوي) <app-tooltip text="الجزء من الدين طويل الأجل المستحق خلال الـ 12 شهرًا القادمة."></app-tooltip></label>
+          <input type="number" name="longTermDebt" [value]="formData().longTermDebt" (input)="onInputChange($event)" class="w-full p-3 bg-white border border-slate-300 rounded-lg" placeholder="0.00">
+        </div>
+      </div>
+      }
+      @case ('الذهب') {
+      <!-- Gold Step -->
+      <h2 class="text-2xl font-bold text-slate-800 mb-6">حساب قيمة الذهب</h2>
+      <div class="space-y-4">
+        <div class="form-group">
+          <label for="goldPricePerGram" class="flex items-center gap-2 font-semibold text-slate-700 mb-2">سعر الذهب الحالي (للجرام) <app-tooltip text="أدخل السعر الحالي للذهب بالدولار الأمريكي للجرام الواحد."></app-tooltip></label>
+          <input type="number" name="goldPricePerGram" [value]="formData().goldPricePerGram" (input)="onInputChange($event)" class="w-full p-3 bg-white border border-slate-300 rounded-lg" placeholder="75.21">
+        </div>
+<!--        <div class="p-4 bg-slate-50 rounded-lg text-center">-->
+<!--          <p class="text-sm text-slate-500">القيمة الإجمالية المحسوبة للذهب</p>-->
+<!--          <p class="text-3xl font-bold text-emerald-600">{{ formData().goldValue | currency:'USD' }}</p>-->
+<!--        </div>-->
+      </div>
+      }
+      @case ('مراجعة') {
+      <!-- Review Step -->
+      <h2 class="text-2xl font-bold text-slate-800 mb-6">مراجعة حسابك</h2>
+      <div class="space-y-4 rounded-lg border border-slate-200 p-4">
+        <h3 class="font-bold text-lg text-emerald-700 border-b pb-2 mb-2">الأصول</h3>
+        <div class="flow-root">
+          <dl class="-my-3 divide-y divide-slate-100 text-sm">
+            @if (formData().cash > 0) { <div class="grid grid-cols-2 gap-1 py-3"><dt class="text-slate-600">النقد</dt><dd class="text-end font-medium text-slate-800">{{ formData().cash | currency:'USD' }}</dd></div> }
+            @if (persona() === 'individual' && formData().goldValue > 0) { <div class="grid grid-cols-2 gap-1 py-3"><dt class="text-slate-600">قيمة الذهب</dt><dd class="text-end font-medium text-slate-800">{{ formData().goldValue | currency:'USD' }}</dd></div> }
+            @if (formData().stocks > 0) { <div class="grid grid-cols-2 gap-1 py-3"><dt class="text-slate-600">الأسهم/الاستثمارات</dt><dd class="text-end font-medium text-slate-800">{{ formData().stocks | currency:'USD' }}</dd></div> }
+            @if (formData().inventory > 0) { <div class="grid grid-cols-2 gap-1 py-3"><dt class="text-slate-600">المخزون</dt><dd class="text-end font-medium text-slate-800">{{ formData().inventory | currency:'USD' }}</dd></div> }
+            @if (formData().receivables > 0) { <div class="grid grid-cols-2 gap-1 py-3"><dt class="text-slate-600">المستحقات</dt><dd class="text-end font-medium text-slate-800">{{ formData().receivables | currency:'USD' }}</dd></div> }
+          </dl>
+        </div>
+      </div>
+      <div class="space-y-4 rounded-lg border border-slate-200 p-4 mt-4">
+        <h3 class="font-bold text-lg text-red-700 border-b pb-2 mb-2">الخصوم</h3>
+        <div class="flow-root">
+          <dl class="-my-3 divide-y divide-slate-100 text-sm">
+            @if (formData().accountPayable > 0) { <div class="grid grid-cols-2 gap-1 py-3"><dt class="text-slate-600">الذمم الدائنة</dt><dd class="text-end font-medium text-slate-800">{{ formData().accountPayable | currency:'USD' }}</dd></div> }
+            @if (formData().expenses > 0) { <div class="grid grid-cols-2 gap-1 py-3"><dt class="text-slate-600">المصاريف</dt><dd class="text-end font-medium text-slate-800">{{ formData().expenses | currency:'USD' }}</dd></div> }
+            @if (formData().shortTermLoans > 0) { <div class="grid grid-cols-2 gap-1 py-3"><dt class="text-slate-600">قروض قصيرة الأجل</dt><dd class="text-end font-medium text-slate-800">{{ formData().shortTermLoans | currency:'USD' }}</dd></div> }
+            @if (formData().longTermDebt > 0) { <div class="grid grid-cols-2 gap-1 py-3"><dt class="text-slate-600">ديون طويلة الأجل</dt><dd class="text-end font-medium text-slate-800">{{ formData().longTermDebt | currency:'USD' }}</dd></div> }
+          </dl>
+        </div>
+      </div>
+      }
+      }
+    </div>
+
+    <!-- Navigation -->
+    @if (currentStep() > 0) {
+    <div class="flex justify-between mt-8">
+      <button (click)="back()" class="px-6 py-2 bg-slate-200 text-slate-700 font-semibold rounded-lg hover:bg-slate-300 transition-colors">
+        رجوع
+      </button>
+
+      @if (currentStep() < steps().length - 1) {
+      <button (click)="next()" class="px-6 py-2 bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-700 transition-colors">
+        التالي
+      </button>
+      } @else {
+      <button (click)="calculate()"
+              [disabled]="isCalculating()"
+              class="px-6 py-2 bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-700 transition-colors flex items-center justify-center w-[180px] disabled:opacity-75 disabled:cursor-not-allowed">
+        @if (isCalculating()) {
+        <svg class="animate-spin -ms-1 me-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span>جاري الحساب...</span>
+        } @else {
+        <span>احسب الزكاة</span>
+        }
+      </button>
+      }
+    </div>
+    }
+  </div>
+</div>

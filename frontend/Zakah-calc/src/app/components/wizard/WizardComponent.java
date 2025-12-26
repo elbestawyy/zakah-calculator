@@ -3,13 +3,13 @@ import { ChangeDetectionStrategy, Component, inject, computed, signal } from '@a
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { ZakahService } from '../../services/zakah.service';
 import { Persona, ZakahFormData } from '../../models/zakah.model';
-import { TooltipComponent } from '../../shared/tooltip/tooltip';
+import { TooltipComponent } from '../../shared/tooltip/tooltip.component';
 
 @Component({
   selector: 'app-wizard',
   standalone: true,
   imports: [CommonModule, TooltipComponent, CurrencyPipe],
-  templateUrl: './wizard.html',
+  templateUrl: './wizard.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WizardComponent {
@@ -22,8 +22,6 @@ export class WizardComponent {
 
   persona = computed(() => this.formData().persona);
   fileName = signal<string | null>(null);
-  isLoading = signal(false);
-  errorMessage = signal<string | null>(null);
 
   onDateChange(event: Event) {
     const value = (event.target as HTMLInputElement).value;
@@ -47,65 +45,32 @@ export class WizardComponent {
     this.zakahService.updateFormData(patch);
   }
 
-  async onFileChange(event: Event) {
+  onFileChange(event: Event) {
     const target = event.target as HTMLInputElement;
     if (target.files && target.files.length > 0) {
       const file = target.files[0];
       this.fileName.set(file.name);
-      this.isLoading.set(true);
-      this.errorMessage.set(null);
+      console.log('File selected:', file);
 
-      try {
-        console.log('Processing Excel file:', file.name);
+      // In a real application, you would parse the Excel file here.
+      // For demonstration, we'll mock the data and jump to the review step.
+      this.zakahService.updateFormData({
+        cash: 25000,
+        stocks: 12000,
+        inventory: 35000,
+        receivables: 5000,
+        accountPayable: 8000,
+        expenses: 1500,
+        shortTermLoans: 4000,
+        longTermDebt: 2000,
+      });
 
-        // قراءة ملف Excel
-        const parsedData = await this.zakahService.readExcelFile(file);
-
-        console.log('Parsed data from Excel:', parsedData);
-
-        // تحديث نموذج البيانات
-        this.zakahService.updateFormData(parsedData);
-
-        // الانتقال إلى صفحة المراجعة
-        const reviewStepIndex = this.steps().indexOf('مراجعة');
-        if (reviewStepIndex !== -1) {
-          this.zakahService.goToStep(reviewStepIndex);
-        }
-
-        this.errorMessage.set(null);
-
-      } catch (error) {
-        console.error('Error reading Excel file:', error);
-        this.errorMessage.set('حدث خطأ في قراءة ملف Excel. تأكد من تنسيق الملف.');
-
-        // يمكنك استخدام بيانات تجريبية كبديل
-        this.useSampleData();
-
-      } finally {
-        this.isLoading.set(false);
+      const reviewStepIndex = this.steps().indexOf('مراجعة');
+      if (reviewStepIndex !== -1) {
+        this.zakahService.goToStep(reviewStepIndex);
       }
     } else {
       this.fileName.set(null);
-    }
-  }
-
-  private useSampleData() {
-    // بيانات تجريبية في حالة فشل قراءة الملف
-    this.zakahService.updateFormData({
-      cash: 1000000,
-      stocks: 1000000,
-      inventory: 1000000,
-      receivables: 1000000,
-      accountPayable: 1000,
-      expenses: 1000,
-      shortTermLoans: 1000,
-      goldWeightInGrams: 1000,
-      longTermDebt: 0
-    });
-
-    const reviewStepIndex = this.steps().indexOf('مراجعة');
-    if (reviewStepIndex !== -1) {
-      this.zakahService.goToStep(reviewStepIndex);
     }
   }
 
