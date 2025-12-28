@@ -13,7 +13,7 @@ public interface ZakahCompanyRecordRepository
     ZakahCompanyRecord findByIdAndUserId(Long id, Long userId);
 
     //Get all balance sheet records by user id
-    List<ZakahCompanyRecord> findAllByUserId(Long userId);
+    List<ZakahCompanyRecord> findAllByUserIdOrderByBalanceSheetDateDesc(Long userId);
 
     //Delete balance sheet record by id and user id
     void deleteByIdAndUserId(Long id,Long userId);

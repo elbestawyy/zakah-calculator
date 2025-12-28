@@ -35,6 +35,6 @@ public class ZakahRecord extends BaseEntity {
 
         @Enumerated(EnumType.STRING)
         @Column(name = "status", nullable = false)
-        private ZakahStatus status = ZakahStatus.NOT_CALCULATED;
+        private ZakahStatus status;
     }
 

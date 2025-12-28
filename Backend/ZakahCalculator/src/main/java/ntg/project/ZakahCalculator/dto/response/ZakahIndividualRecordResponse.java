@@ -17,7 +17,6 @@ public class ZakahIndividualRecordResponse {
 
     // Status information
     private ZakahStatus status;
-    private String statusDescription;
 
     // Individual Assets
     private BigDecimal cash;
@@ -28,20 +27,10 @@ public class ZakahIndividualRecordResponse {
 
     // Zakah Info
     private BigDecimal goldPrice;
-    private Long userId;
-
-    // Zakah Comparison with Previous Record
-    private BigDecimal previousZakahAmount;
-    private BigDecimal zakahDifference;
-
-    // Hawl Status
-    private boolean hawlCompleted;
-    private long daysSinceLastCalculation;
-    private String message;
 
     // Current Record - Main Display
     private BigDecimal totalAssets;
-    private BigDecimal zakahPool; // Same as total assets for individuals
     private BigDecimal zakahAmount;
     private LocalDate calculationDate;
+
 }

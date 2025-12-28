@@ -11,20 +11,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 public class ZakahIndividualRecordSummaryResponse {
-
     private Long id;
-
-    // Status
     private ZakahStatus status;
-    private String statusDescription;
-
-    // Summary calculations
-    private BigDecimal totalAssets;
     private BigDecimal zakahAmount;
-
-    // Dates for reference
     private LocalDate calculationDate;
 
-    // User reference
-    private Long userId;
 }
