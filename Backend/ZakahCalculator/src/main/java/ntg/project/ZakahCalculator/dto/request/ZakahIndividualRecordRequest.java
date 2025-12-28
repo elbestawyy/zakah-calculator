@@ -23,6 +23,9 @@ public class ZakahIndividualRecordRequest {
     private BigDecimal Silver;
 
     @NotBlank(message = "This field can't be Empty")
+    private BigDecimal Bonds;
+
+    @NotBlank(message = "This field can't be Empty")
     private Long userId;
 
     @NotBlank(message = "This field can't be Empty")
@@ -32,7 +35,7 @@ public class ZakahIndividualRecordRequest {
     private BigDecimal silverPrice;
 
     @NotBlank(message = "This field can't be Empty")
-    private LocalDate StartDate;
+    private LocalDate CalculationDate;
 
     @NotBlank(message = "This field can't be Empty")
     private BigDecimal stocks;

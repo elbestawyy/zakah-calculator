@@ -7,6 +7,7 @@ import static org.springframework.http.HttpStatus.*;
 
 @Getter
 public enum ErrorCode {
+
     USER_NOT_FOUND("USER_NOT_FOUND", "user not found with id %s", NOT_FOUND),
     CHANGE_PASSWORD_MISMATCH("CHANGE_PASSWORD_MISMATCH", "Current password and new password are the same", BAD_REQUEST),
     INVALID_CURRENT_PASSWORD("INVALID_CURRENT_PASSWORD", "Current password are invalid", BAD_REQUEST),
@@ -26,7 +27,7 @@ public enum ErrorCode {
     UN_EXPECTED_FOLLOW("UN_EXPECTED_FOLLOW", "Can't Complete this follow", BAD_REQUEST),
     POST_NOT_FOUND("POST_NOT_FOUND", "post not found", NOT_FOUND),
     UNAUTHORIZED_ACTION("UNAUTHORIZED_ACTION", "unauthorized action", FORBIDDEN),
-    RECORD_NOT_FOUND("RECORD_NOT_FOUND", "Comment Not Found", NOT_FOUND),
+    RECORD_NOT_FOUND("RECORD_NOT_FOUND", "RECORD_NOT_FOUND", NOT_FOUND),
     NOTIFICATION_NOT_FOUND("NOTIFICATION_NOT_FOUND", "Notification Not Found", NOT_FOUND),
     LIKE_CONFLICT("LIKE_CONFLICT", "like conflict", CONFLICT),
     JWT_NOT_VALID("JWT_NOT_VALID", "access token not valid", UNAUTHORIZED),
@@ -38,7 +39,15 @@ public enum ErrorCode {
     IMAGE_TYPE_NOT_SUPPORTED("IMAGE_TYPE_NOT_SUPPORTED", "Image type not supported. Allowed types: JPG, JPEG, PNG, BMP, WEBP, SVG", BAD_REQUEST),
     ROLE_NOT_FOUND("ROLE_NOT_FOUND","role not found",NOT_FOUND),
     ACCOUNT_NOT_VERIFIED("ACCOUNT_NOT_VERIFIED","account not verified",CONFLICT),
-    OTP_TOKEN_EXPIRED("OTP_TOKEN_EXPIRED","token expired",FORBIDDEN);
+    ZAKAH_RECORD_NOT_FOUND("ZAKAH_RECORD_NOT_FOUND", "Zakah record not found with id %s", NOT_FOUND),
+    ZAKAH_CALCULATION_FAILED("ZAKAH_CALCULATION_FAILED", "Failed to calculate zakah: %s", UNPROCESSABLE_ENTITY),
+    INVALID_ZAKAH_DATA("INVALID_ZAKAH_DATA", "Invalid zakah data: %s", BAD_REQUEST),
+    UNAUTHORIZED_ZAKAH_ACCESS("UNAUTHORIZED_ZAKAH_ACCESS", "You are not authorized to access zakah record with id %s", FORBIDDEN),
+    NEGATIVE_FINANCIAL_VALUE("NEGATIVE_FINANCIAL_VALUE", "%s cannot be negative", BAD_REQUEST),
+    INVALID_BALANCE_SHEET_DATE("INVALID_BALANCE_SHEET_DATE", "Invalid balance sheet date: %s", BAD_REQUEST),
+    NEGATIVE_ZAKAH_POOL("NEGATIVE_ZAKAH_POOL", "Zakah pool cannot be negative. Your liabilities exceed your assets", BAD_REQUEST),
+    GOLD_PRICE_INVALID("GOLD_PRICE_INVALID", "Gold price must be greater than zero", BAD_REQUEST),
+    BALANCE_SHEET_DATE_BEFORE_LAST_RECORD("BALANCE_SHEET_DATE_BEFORE_LAST_RECORD", "Balance sheet date cannot be before your last record date: %s", BAD_REQUEST);
     private final String code;
     private final String defaultMessage;
     private final HttpStatus status;

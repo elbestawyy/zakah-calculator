@@ -2,6 +2,8 @@ package ntg.project.ZakahCalculator.mapper;
 
 import lombok.RequiredArgsConstructor;
 import ntg.project.ZakahCalculator.dto.request.ZakahCompanyRecordRequest;
+import ntg.project.ZakahCalculator.dto.response.ZakahCompanyRecordResponse;
+import ntg.project.ZakahCalculator.dto.response.ZakahCompanyRecordSummaryResponse;
 import ntg.project.ZakahCalculator.entity.User;
 import ntg.project.ZakahCalculator.entity.ZakahCompanyRecord;
 import ntg.project.ZakahCalculator.repository.UserRepository;
@@ -39,27 +41,91 @@ public class ZakahCompanyRecordMapper {
         return record;
     }
 
-    public ZakahCompanyRecordRequest toDetailedZakahCompanyRecordResponse(ZakahCompanyRecord entity) {
-
+    //Detailed Response
+    public ZakahCompanyRecordResponse toDetailedResponse(ZakahCompanyRecord entity) {
         if (entity == null) {
             return null;
         }
 
-        return ZakahCompanyRecordRequest.builder()
+        // Calculate totals
+        BigDecimal totalAssets = nullToZero(entity.getCashEquivalents())
+                .add(nullToZero(entity.getAccountsReceivable()))
+                .add(nullToZero(entity.getInventory()))
+                .add(nullToZero(entity.getInvestment()));
+
+        BigDecimal totalLiabilities = nullToZero(entity.getAccountsPayable())
+                .add(nullToZero(entity.getShortTermLiability()))
+                .add(nullToZero(entity.getAccruedExpenses()))
+                .add(nullToZero(entity.getYearlyLongTermLiabilities()));
+
+        BigDecimal zakahPool = totalAssets.subtract(totalLiabilities);
+
+        return ZakahCompanyRecordResponse.builder()
+                .id(entity.getId())
+                // Status information
+                .status(entity.getStatus())
+                .statusDescription(entity.getStatus().getDescription())
+                // Assets
                 .cashEquivalents(entity.getCashEquivalents())
                 .accountsReceivable(entity.getAccountsReceivable())
                 .inventory(entity.getInventory())
                 .investment(entity.getInvestment())
+                // Liabilities
                 .accountsPayable(entity.getAccountsPayable())
                 .shortTermLiability(entity.getShortTermLiability())
                 .accruedExpenses(entity.getAccruedExpenses())
-                .yearly_long_term_liabilities(entity.getYearlyLongTermLiabilities())
+                .yearlyLongTermLiabilities(entity.getYearlyLongTermLiabilities())
+                // Zakah Info
                 .goldPrice(entity.getGoldPrice())
                 .userId(entity.getUser().getId())
-                .balance_sheet_date(entity.getBalanceSheetDate())
+                .zakahAmount(entity.getZakahAmount())
+                // Calculated values
+                .totalAssets(totalAssets)
+                .totalLiabilities(totalLiabilities)
+                .currentZakahPool(zakahPool)
+                .balanceSheetDate(entity.getBalanceSheetDate())
                 .build();
     }
 
+
+    //Summary Response
+    public ZakahCompanyRecordSummaryResponse toSummaryResponse(ZakahCompanyRecord entity) {
+        if (entity == null) {
+            return null;
+        }
+
+        // Calculate totals
+        BigDecimal totalAssets = nullToZero(entity.getCashEquivalents())
+                .add(nullToZero(entity.getAccountsReceivable()))
+                .add(nullToZero(entity.getInventory()))
+                .add(nullToZero(entity.getInvestment()));
+
+        BigDecimal totalLiabilities = nullToZero(entity.getAccountsPayable())
+                .add(nullToZero(entity.getShortTermLiability()))
+                .add(nullToZero(entity.getAccruedExpenses()))
+                .add(nullToZero(entity.getYearlyLongTermLiabilities()));
+
+        BigDecimal zakahPool = totalAssets.subtract(totalLiabilities);
+
+        return ZakahCompanyRecordSummaryResponse.builder()
+                //Basic Information
+                .id(entity.getId())
+                .userId(entity.getUser().getId())
+                .balanceSheetDate(entity.getBalanceSheetDate())
+                // Status
+                .status(entity.getStatus())
+                .statusDescription(entity.getStatus().getDescription())
+
+                // Summary calculations
+                .totalAssets(totalAssets)
+                .totalLiabilities(totalLiabilities)
+                .zakahPool(zakahPool)
+                .zakahAmount(entity.getZakahAmount())
+
+                .build();
+    }
+
+    //convert null to zero
     private BigDecimal nullToZero(BigDecimal value) {
         return Optional.ofNullable(value).orElse(BigDecimal.ZERO);
     }

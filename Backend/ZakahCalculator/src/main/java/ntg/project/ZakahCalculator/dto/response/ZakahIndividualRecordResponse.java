@@ -1,10 +1,6 @@
 package ntg.project.ZakahCalculator.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import ntg.project.ZakahCalculator.entity.util.ZakahStatus;
 
 import java.math.BigDecimal;
@@ -15,25 +11,20 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ZakahCompanyRecordResponse {
+public class ZakahIndividualRecordResponse {
 
     private Long id;
 
-    //Zakah Status
+    // Status information
     private ZakahStatus status;
     private String statusDescription;
 
-    // Assets
-    private BigDecimal cashEquivalents;
-    private BigDecimal accountsReceivable;
-    private BigDecimal inventory;
-    private BigDecimal investment;
-
-    // Liabilities
-    private BigDecimal accountsPayable;
-    private BigDecimal shortTermLiability;
-    private BigDecimal accruedExpenses;
-    private BigDecimal yearlyLongTermLiabilities;
+    // Individual Assets
+    private BigDecimal cash;
+    private BigDecimal gold;
+    private BigDecimal silver;
+    private BigDecimal stocks;
+    private BigDecimal bonds;
 
     // Zakah Info
     private BigDecimal goldPrice;
@@ -50,9 +41,7 @@ public class ZakahCompanyRecordResponse {
 
     // Current Record - Main Display
     private BigDecimal totalAssets;
-    private BigDecimal totalLiabilities;
-    private BigDecimal currentZakahPool; // Net wealth (Assets - Liabilities)
+    private BigDecimal zakahPool; // Same as total assets for individuals
     private BigDecimal zakahAmount;
     private LocalDate calculationDate;
-    private LocalDate balanceSheetDate;
 }

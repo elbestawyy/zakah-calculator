@@ -3,6 +3,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import ntg.project.ZakahCalculator.entity.util.BaseEntity;
+import ntg.project.ZakahCalculator.entity.util.ZakahStatus;
 
 import java.math.BigDecimal;
 
@@ -31,5 +32,9 @@ public class ZakahRecord extends BaseEntity {
 
         @Column(name = "gold_price", nullable = false, precision = 10, scale = 2)
         private BigDecimal goldPrice;
+
+        @Enumerated(EnumType.STRING)
+        @Column(name = "status", nullable = false)
+        private ZakahStatus status = ZakahStatus.NOT_CALCULATED;
     }
 
