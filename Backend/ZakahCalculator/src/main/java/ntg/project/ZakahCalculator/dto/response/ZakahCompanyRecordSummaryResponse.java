@@ -15,16 +15,7 @@ public class ZakahCompanyRecordSummaryResponse {
     //Basic Information
     private Long id;
     private LocalDate balanceSheetDate;
-    private Long userId;
-
-    // Status
     private ZakahStatus status;
-    private String statusDescription;
-
-    // Summary calculations
-    private BigDecimal totalAssets;
-    private BigDecimal totalLiabilities;
-    private BigDecimal zakahPool;
     private BigDecimal zakahAmount;
 
 

@@ -1,6 +1,8 @@
 package ntg.project.ZakahCalculator.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -14,30 +16,31 @@ import java.time.LocalDate;
 @Builder
 public class ZakahIndividualRecordRequest {
 
-    @NotBlank(message = "This field can't be Empty")
-    private BigDecimal Cash;
+    @NotNull(message = "هذا الحقل مطلوب، من فضلك لا تتركه فارغًا.")
+    @PositiveOrZero(message = "من فضلك أدخل رقمًا أكبر من أو يساوي صفر.")
+    private BigDecimal cash;
 
-    @NotBlank(message = "This field can't be Empty")
-    private BigDecimal Gold;
-    @NotBlank(message = "This field can't be Empty")
-    private BigDecimal Silver;
+    @NotNull(message = "هذا الحقل مطلوب، من فضلك لا تتركه فارغًا.")
+    @PositiveOrZero(message = "من فضلك أدخل رقمًا أكبر من أو يساوي صفر.")
+    private BigDecimal gold;
+    @NotNull(message = "هذا الحقل مطلوب، من فضلك لا تتركه فارغًا.")
+    @PositiveOrZero(message = "من فضلك أدخل رقمًا أكبر من أو يساوي صفر.")
+    private BigDecimal silver;
 
-    @NotBlank(message = "This field can't be Empty")
-    private BigDecimal Bonds;
+    @NotNull(message = "هذا الحقل مطلوب، من فضلك لا تتركه فارغًا.")
+    @PositiveOrZero(message = "من فضلك أدخل رقمًا أكبر من أو يساوي صفر.")
+    private BigDecimal bonds;
 
-    @NotBlank(message = "This field can't be Empty")
-    private Long userId;
-
-    @NotBlank(message = "This field can't be Empty")
+    @NotNull(message = "هذا الحقل مطلوب، من فضلك لا تتركه فارغًا.")
+    @PositiveOrZero(message = "من فضلك أدخل رقمًا أكبر من أو يساوي صفر.")
     private BigDecimal goldPrice;
 
-    @NotBlank(message = "This field can't be Empty")
-    private BigDecimal silverPrice;
+    @NotNull(message = "هذا الحقل مطلوب، من فضلك لا تتركه فارغًا.")
+    @PositiveOrZero(message = "من فضلك أدخل رقمًا أكبر من أو يساوي صفر.")
+    private LocalDate calculationDate;
 
-    @NotBlank(message = "This field can't be Empty")
-    private LocalDate CalculationDate;
-
-    @NotBlank(message = "This field can't be Empty")
+    @NotNull(message = "هذا الحقل مطلوب، من فضلك لا تتركه فارغًا.")
+    @PositiveOrZero(message = "من فضلك أدخل رقمًا أكبر من أو يساوي صفر.")
     private BigDecimal stocks;
 
 }

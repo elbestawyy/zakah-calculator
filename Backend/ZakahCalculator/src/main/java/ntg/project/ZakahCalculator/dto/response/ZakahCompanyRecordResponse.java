@@ -18,41 +18,27 @@ import java.time.LocalDate;
 public class ZakahCompanyRecordResponse {
 
     private Long id;
-
-    //Zakah Status
     private ZakahStatus status;
-    private String statusDescription;
-
     // Assets
     private BigDecimal cashEquivalents;
-    private BigDecimal accountsReceivable;
-    private BigDecimal inventory;
     private BigDecimal investment;
+    private BigDecimal inventory;
+    private BigDecimal accountsReceivable;
 
     // Liabilities
     private BigDecimal accountsPayable;
-    private BigDecimal shortTermLiability;
     private BigDecimal accruedExpenses;
+    private BigDecimal shortTermLiability;
     private BigDecimal yearlyLongTermLiabilities;
 
     // Zakah Info
     private BigDecimal goldPrice;
-    private Long userId;
-
-    // Zakah Comparison with Previous Record
-    private BigDecimal previousZakahAmount;
-    private BigDecimal zakahDifference;
-
-    // Hawl Status
-    private boolean hawlCompleted;
-    private long daysSinceLastCalculation;
-    private String message;
 
     // Current Record - Main Display
     private BigDecimal totalAssets;
     private BigDecimal totalLiabilities;
     private BigDecimal currentZakahPool; // Net wealth (Assets - Liabilities)
     private BigDecimal zakahAmount;
-    private LocalDate calculationDate;
+    private BigDecimal nisabAmount;
     private LocalDate balanceSheetDate;
 }
