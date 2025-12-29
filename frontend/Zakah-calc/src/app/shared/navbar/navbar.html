@@ -58,12 +58,11 @@
      appClickOutside 
      (clickOutside)="isProfileMenuOpen.set(false)">
      
-    <a (click)="toggleProfileMenu($event)"
-       class="flex items-center gap-3 border rounded-full p-1 hover:bg-slate-100 transition-colors hover:cursor-pointer hover:border-emerald-400">
-        <img class="h-9 w-9 rounded-full" src="https://picsum.photos/100/100">
+    <a (click)="toggleProfileMenu($event) "
+       class="flex items-center gap-3 border rounded-full p-2 hover:bg-slate-100 transition-colors hover:cursor-pointer hover:border-emerald-400">
         <div class="text-start">
             <p class="text-sm font-semibold text-slate-800">{{name}}</p>
-            <p class="text-xs text-slate-500">{{type}}</p>
+            <p class="text-xs text-slate-500">{{ type }}</p>
         </div>
         <svg class="h-4 w-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />

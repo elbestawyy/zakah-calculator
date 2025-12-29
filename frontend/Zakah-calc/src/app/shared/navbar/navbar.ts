@@ -3,11 +3,12 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthStorageService } from '../../services/storage-service/StorageService';
 import { AuthService } from '../../services/auth-service/auth.service';
 import { UserResponse } from '../../models/response/IAuthResponse';
+import { TypeLabelPipe } from '../../pipes/pipes/type-label-pipe';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive , TypeLabelPipe],
   templateUrl: './navbar.html',
 })
 export class Navbar {
