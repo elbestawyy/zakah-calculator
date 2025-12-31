@@ -15,7 +15,6 @@ public class ZakahCompanyRecordMapper {
             User user) {
 
         ZakahCompanyRecord record = new ZakahCompanyRecord();
-
         record.setBalanceSheetDate(request.getBalanceSheetDate());
 
         // Assets
@@ -66,6 +65,8 @@ public class ZakahCompanyRecordMapper {
                 .goldPrice(entity.getGoldPrice())
                 .zakahAmount(entity.getZakahAmount())
                 .balanceSheetDate(entity.getBalanceSheetDate())
+                .totalAssets(entity.getCashEquivalents().add(entity.getAccountsReceivable().add(entity.getInventory()).add(entity.getInvestment())))
+                .totalLiabilities(entity.getAccountsPayable().add(entity.getAccountsPayable()).add(entity.getShortTermLiability()).add(entity.getAccruedExpenses()))
                 .build();
     }
 }

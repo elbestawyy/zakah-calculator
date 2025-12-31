@@ -51,4 +51,7 @@ public class ZakahCompanyRecord extends ZakahRecord {
     // Balance sheet Data
     @Column(name = "balance_sheet_date")
     private LocalDate balanceSheetDate;
+
+    @Column(name = "zakah_amount")
+    private BigDecimal zakahAmount;
 }
