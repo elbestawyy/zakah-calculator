@@ -7,6 +7,7 @@ import {
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
+import { AuthStorageService } from '../../../services/storage-service/StorageService';
 
 
 @Component({
@@ -25,6 +26,7 @@ export class DashboardComponent implements OnInit {
   history = this.zakahService.history;
   spinner = inject(NgxSpinnerService);
   isViewingHistory = signal(false);
+  _role = AuthStorageService.getUserType()
 
   ngOnInit() {
     this.spinner.show();
@@ -88,7 +90,11 @@ export class DashboardComponent implements OnInit {
   }
   // 🔹 حساب جديد
   onStartNew() {
-    this.router.navigate(['/individual/wizard']);
+    if(this._role === 'ROLE_COMPANY'){
+      this.router.navigate(['/company/wizard']);
+    }else if(this._role === 'ROLE_COMPANY_SOFTWARE'){
+      this.router.navigate(['/company-software/wizard']);
+    }
   }
 
   historicalAverage = computed(() => {
