@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import { CommonModule } from '@angular/common';
 import {interval, Subject, takeWhile} from 'rxjs';
 import { takeUntil, map, tap } from 'rxjs/operators';
@@ -14,7 +14,7 @@ import { LeftSectionViewComponent } from "../left-section-view/left-section-view
 @Component({
   selector: 'app-verify-otp',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, LeftSectionViewComponent],
+  imports: [CommonModule, ReactiveFormsModule, LeftSectionViewComponent,RouterLink],
   templateUrl: './verify-otp-account.component.html',
   styleUrls: ['./verify-otp-account.component.css']
 })
