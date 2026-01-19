@@ -19,7 +19,7 @@
 
         @if (f['email'].touched && f['email'].errors) {
 
-        @if (f['email'].errors!['required'] || f['email'].touched) {
+        @if (f['email'].errors!['required']) {
         <div
           class="flex items-center p-2 my-1 text-sm text-red-800 rounded-lg bg-red-100  border border-red-200 transition-opacity"
           role="alert">
@@ -31,9 +31,10 @@
           <span class="sr-only">Info</span>
           <div>
             <span class="font-medium">
-              البريد الإلكتروني مطلوب
+              البريد الإلكتروني مطلوب 
             </span>
           </div>
+          
         </div>
         }
         @if (f['email'].errors['minlength']) {

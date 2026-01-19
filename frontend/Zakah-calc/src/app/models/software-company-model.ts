@@ -13,7 +13,7 @@ export interface SoftwareCompanyModel {
   depositsStatutory: number;           // الوديعة القانونية
   securitiesTrading: number;           // الاستثمارات في الأسهم بغرض المتاجرة
   partiesThirdWithDeposits: number;    // التأمينات لدى الغير
-
+  
   // البنود المخصومة من الوعاء الزكوي
   assetsFixedProvisionDepreciation: number;    // مخصص استهلاك الموجودات الثابتة
   provisionOverhaulMaintenance: number;       // مخصص الصيانة أو العمرة
