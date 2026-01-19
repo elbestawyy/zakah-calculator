@@ -3,7 +3,7 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthStorageService } from '../../services/storage-service/StorageService';
 import { AuthService } from '../../services/auth-service/auth.service';
 import { UserType } from '../../models/enums/UserType';
-import {ClickOutsideDirective} from '../../directives/ClickOutside.directive';
+import { ClickOutsideDirective } from '../../directives/ClickOutside.directive';
 
 @Component({
   selector: 'app-navbar',
@@ -12,52 +12,53 @@ import {ClickOutsideDirective} from '../../directives/ClickOutside.directive';
   templateUrl: './navbar.html',
 })
 export class Navbar {
-  private readonly _AuthService = inject(AuthService)
+  private readonly _AuthService = inject(AuthService);
+
   name = AuthStorageService.getUserFullName();
   type = AuthStorageService.getUserType();
-  //  : UserResponse
 
   isProfileMenuOpen = signal(false);
+  isMobileMenuOpen = signal(false);
 
+  constructor(private router: Router) {}
 
-  constructor(private router: Router) {
-
-  }
-
-  // Inside your component class
   toggleProfileMenu(event: Event) {
-    event.stopPropagation(); // Prevents the click from hitting the 'document' listener
-    this.isProfileMenuOpen.update(val => !val);
+    event.stopPropagation();
+    this.isProfileMenuOpen.update(v => !v);
   }
 
-  closeMenu() {
+  toggleMobileMenu() {
+    this.isMobileMenuOpen.update(v => !v);
+  }
+
+  closeAllMenus() {
     this.isProfileMenuOpen.set(false);
+    this.isMobileMenuOpen.set(false);
   }
 
   switchWizard() {
-    this.isProfileMenuOpen.set(false);
-    if(this.type === UserType.ROLE_INDIVIDUAL){
+    this.closeAllMenus();
+    if (this.type === UserType.ROLE_INDIVIDUAL) {
       this.router.navigate(['/individual/wizard']);
-    }else if (this.type === UserType.ROLE_COMPANY){
+    } else if (this.type === UserType.ROLE_COMPANY) {
       this.router.navigate(['/company/wizard']);
-    }else if (this.type === UserType.ROLE_COMPANY_SOFTWARE){
+    } else {
       this.router.navigate(['/company/company-software/wizard']);
     }
   }
 
   switchDashboard() {
-    this.isProfileMenuOpen.set(false);
-    if(this.type === UserType.ROLE_INDIVIDUAL){
+    this.closeAllMenus();
+    if (this.type === UserType.ROLE_INDIVIDUAL) {
       this.router.navigate(['/individual/dashboard']);
-    }else if (this.type === UserType.ROLE_COMPANY || this.type === UserType.ROLE_COMPANY_SOFTWARE){
+    } else {
       this.router.navigate(['/company/dashboard']);
     }
   }
 
   logout() {
     this._AuthService.logout();
-    this.isProfileMenuOpen.set(false);
+    this.closeAllMenus();
     this.router.navigate(['/']);
   }
-
 }
