@@ -12,4 +12,4 @@ in cmd:
 
 in cmd:
 1- {cd Backend}
-2- {java -jar ZakahCalculator-1.0.0.jar}
+2- {java -jar ZakahCalculator-2.0.0.jar}
