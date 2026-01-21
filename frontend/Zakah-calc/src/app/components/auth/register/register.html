@@ -9,7 +9,7 @@
       <form class="space-y-4" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
 
         <!-- Name -->
-        
+
         <div>
           <label class="block mb-1.5 font-medium">الاسم</label>
           <input type="text" formControlName="name" class="w-full px-4 py-2.5 border rounded-lg"
@@ -117,7 +117,7 @@
             <span class="sr-only">Info</span>
             <div>
               <span class="font-medium">
-                الإيميل غير صالح. يجب أن يبدأ بحرف، ولا يحتوي على نقطتين متتاليتين، ويحتوي على @ ودومين صحيح </span>
+                الإيميل غير صالح. يجب أن يبدأ بحرف، ولا يحتوي على نقطتين متتاليتين، ويحتوي على  &#64; ودومين صحيح </span>
             </div>
           </div>
           }
@@ -134,11 +134,11 @@
 
             <!-- زر إظهار / إخفاء كلمة المرور -->
             <button type="button" (click)="showPassword.set(!showPassword())"
-              class="absolute inset-y-0 left-0 px-3 top-7 flex items-center text-slate-500">
+                    class="absolute inset-y-0 left-0 px-3 top-7 flex items-center text-slate-500">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="w-5 h-5">
+                   stroke="currentColor" class="w-5 h-5">
                 <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                      d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
             </button>
@@ -186,6 +186,7 @@
           <div class="relative">
              <label class="block mb-1.5 font-medium">تأكيد كلمة المرور</label>
           <input [type]="showConfirmPassword() ? 'text' : 'password'" formControlName="confirmPassword"
+                  autocomplete="new-password"
             class="w-full px-4 py-2.5 border rounded-lg">
 
           <!-- زر إظهار / إخفاء confirm password -->
@@ -199,7 +200,7 @@
             </svg>
           </button>
           </div>
-         
+
 
           @if (f['confirmPassword'].touched && f['confirmPassword'].errors) {
           <div

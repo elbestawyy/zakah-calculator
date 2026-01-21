@@ -8,6 +8,7 @@ import { ZakahCompanyExcelService } from './zakah-company-excel-service';
 import { AuthStorageService } from '../storage-service/StorageService';
 import { SoftwareCompanyModel } from '../../models/software-company-model';
 import {ZakahSoftwareCompanyExcelService} from './zakah-software-company-excel-service';
+import {UserType} from '../../models/enums/UserType';
 
 @Injectable({
   providedIn: 'root'
@@ -25,9 +26,13 @@ export class ZakahCompanyRecordService {
   currentWizardStep = signal<number>(0);
   wizardSteps = signal<string[]>(['البداية', 'الأصول', 'الالتزامات', 'صافي الربح', 'التفاصيل', 'مراجعة']);
   isCalculating = signal<boolean>(false);
-  companyType = AuthStorageService.getUserType();
+
 
   constructor(private http: HttpClient) { }
+
+  get companyType(): UserType | null {
+    return AuthStorageService.getUserType();
+  }
 
   getTemplate(): Observable<Blob> {
     if (this.companyType ==='ROLE_COMPANY_SOFTWARE') {
@@ -59,7 +64,6 @@ export class ZakahCompanyRecordService {
 
     if (this.companyType === 'ROLE_COMPANY') {
       console.log('entering ROLE_COMPANY')
-
       request = {
         balanceSheetDate: data.balanceSheetDate,
         cashEquivalents: data.cashEquivalents,
@@ -209,14 +213,6 @@ export class ZakahCompanyRecordService {
           console.log(response.netProfit);
         })
       );
-  }
-
-  loadfullrecord(id: number): Observable<ZakahCompanyRecordResponse> {
-    return this.http.get<ZakahCompanyRecordResponse>(`${this.BASE_URL}/${id}`);
-  }
-
-  calculateAndSave(request: ZakahCompanyRecordRequest): Observable<ZakahCompanyRecordResponse> {
-    return this.http.post<ZakahCompanyRecordResponse>(`${this.BASE_URL}/calculate`, request);
   }
 
   deleteRecord(id: number): void {

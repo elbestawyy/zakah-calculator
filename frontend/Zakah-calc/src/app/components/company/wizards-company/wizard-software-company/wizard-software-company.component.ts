@@ -34,7 +34,7 @@ export class WizardSoftwareCompanyComponent implements OnInit {
 
   ngOnInit() {
     // Initialize balanceSheetDate if not set
-    const currentData = this.softwareFormData();
+    const currentData = structuredClone(this.softwareFormData());
     if (!currentData.balanceSheetDate) {
       const today = new Date().toISOString().split('T')[0];
       this.zakahService.updateSoftwareFormData({ balanceSheetDate: today });
