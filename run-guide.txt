@@ -1,0 +1,15 @@
+############### Frontend ##################
+
+in cmd:
+1- {cd frontend\Zakah-calc}
+2- {npm install}
+3- {ng serve}
+
+
+
+--------------------------------------------
+############### Backend ##################
+
+in cmd:
+1- {cd Backend}
+2- {java -jar ZakahCalculator-2.0.3.jar}

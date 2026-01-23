@@ -177,8 +177,7 @@ public class ZakahCompanyRecordServiceImpl implements ZakahCompanyRecordService 
         }
 
         List<ZakahStatus> excludeStatus = List.of(
-                ZakahStatus.HAWL_NOT_COMPLETED,
-                ZakahStatus.BELOW_NISAB
+                ZakahStatus.HAWL_NOT_COMPLETED
         );
         return recordRepository
                 .findTopByUserIdAndStatusNotInOrderByBalanceSheetDateDesc(userId,excludeStatus)
@@ -187,9 +186,14 @@ public class ZakahCompanyRecordServiceImpl implements ZakahCompanyRecordService 
                             last.getBalanceSheetDate(),
                             currentDate
                     );
-                    return days >= HAWL_DAYS
+
+                    ZakahStatus status = days >= HAWL_DAYS
                             ? ZakahStatus.LAST_RECORD_DUE_AND_NEW_HAWL_BEGIN
                             : ZakahStatus.HAWL_NOT_COMPLETED;
+                    if (last.getStatus() == ZakahStatus.BELOW_NISAB && status.equals(ZakahStatus.LAST_RECORD_DUE_AND_NEW_HAWL_BEGIN)) {
+                        status = ZakahStatus.ELIGABLE_FOR_ZAKAH;
+                    }
+                    return status;
                 })
                 .orElse(ZakahStatus.ELIGABLE_FOR_ZAKAH);
     }
