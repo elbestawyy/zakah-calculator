@@ -24,7 +24,7 @@ export class ZakahCompanyRecordService {
   latestResult = signal<ZakahCompanyRecordResponse | null>(null);
   history = signal<ZakahCompanyRecordResponse[]>([]);
   currentWizardStep = signal<number>(0);
-  wizardSteps = signal<string[]>(['البداية', 'الأصول', 'الالتزامات', 'صافي الربح', 'التفاصيل', 'مراجعة']);
+  wizardSteps = signal<string[]>(['البداية', 'الأصول', 'الالتزامات', 'التفاصيل', 'مراجعة']);
   isCalculating = signal<boolean>(false);
 
 
@@ -75,7 +75,6 @@ export class ZakahCompanyRecordService {
         shortTermLiability: data.shortTermLiability,
         yearlyLongTermLiabilities: data.yearlyLongTermLiabilities,
         goldPrice: data.goldPrice,
-        netProfit: data.netProfit,
         generatingFixedAssets: data.generatingFixedAssets,
         contraAssets: data.contraAssets,
         provisionsUnderLiabilities: data.provisionsUnderLiabilities,
@@ -99,7 +98,6 @@ export class ZakahCompanyRecordService {
         accruedExpenses: softwareData.expensesAccrued,
         shortTermLiability: softwareData.loansTermShort,
         yearlyLongTermLiabilities: softwareData.debtTermLongPortionCurrent,
-        netProfit: softwareData.netProfit,
         generatingFixedAssets: softwareData.generatingFixedAssets,
         contraAssets: softwareData.assetsFixedProvisionDepreciation +
           softwareData.investmentsProvisionImpairment +
@@ -129,7 +127,6 @@ export class ZakahCompanyRecordService {
     return {
       balanceSheetDate: new Date().toISOString().split('T')[0],
       goldPrice: 0,
-      netProfit: 0,
       cashEquivalents: 0,
       accountsReceivable: 0,
       inventory: 0,
@@ -171,7 +168,6 @@ export class ZakahCompanyRecordService {
       expensesAccrued: 0,
       balanceSheetDate: new Date().toISOString().split('T')[0],
       goldPrice: 0,
-      netProfit: 0
     }
   }
 
@@ -210,7 +206,6 @@ export class ZakahCompanyRecordService {
       .pipe(
         tap(response => {
           console.log(response);
-          console.log(response.netProfit);
         })
       );
   }

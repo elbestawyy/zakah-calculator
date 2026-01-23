@@ -190,7 +190,6 @@ export class WizardSoftwareCompanyComponent implements OnInit {
             ? this.normalizeToISO(excelData.balanceSheetDate)
             : new Date().toISOString().split('T')[0],
           goldPrice: excelData.goldPrice || 0,
-          netProfit: excelData.netProfit || 0
         });
 
         const detailsStep = this.steps().indexOf('التفاصيل');

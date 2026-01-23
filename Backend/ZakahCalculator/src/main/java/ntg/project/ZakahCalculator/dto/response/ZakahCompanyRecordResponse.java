@@ -37,8 +37,8 @@ public class ZakahCompanyRecordResponse {
 
     // Zakah Info
     private BigDecimal goldPrice;
-    //netIncome
-    private BigDecimal netProfit;
+//    //netIncome
+//    private BigDecimal netProfit;
 
     // Current Record - Main Display
     private BigDecimal totalAssets;

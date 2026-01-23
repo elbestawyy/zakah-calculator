@@ -186,7 +186,6 @@ export class ZakahCompanyRecordComponent implements OnInit {
           balanceSheetDate: excelData.balanceSheetDate
             ? this.normalizeToISO(excelData.balanceSheetDate.toString())
             : new Date().toISOString().split('T')[0],
-          netProfit: excelData.netProfit || 0,
           generatingFixedAssets: excelData.generatingFixedAssets || 0,
           contraAssets: excelData.contraAssets || 0,
           provisionsUnderLiabilities: excelData.provisionsUnderLiabilities || 0

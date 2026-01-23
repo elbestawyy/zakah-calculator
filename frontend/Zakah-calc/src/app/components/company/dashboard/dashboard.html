@@ -31,16 +31,16 @@
         </p>
       </div>
       <div class="bg-white rounded-xl shadow p-5">
-        <p class="text-sm font-medium text-slate-500">الوعاء الزكوي (الأخير)</p>
+        <p class="text-sm font-medium text-slate-500">الوعاء الزكوي</p>
         <p class="mt-1 text-3xl font-semibold tracking-tight text-slate-800">{{ result.zakahPool| currency:'EGP' }}</p>
       </div>
       <div class="bg-white rounded-xl shadow p-5">
-        <p class="text-sm font-medium text-slate-500">إجمالي الأصول (الأخيرة)</p>
+        <p class="text-sm font-medium text-slate-500">إجمالي الأصول</p>
         <p class="mt-1 text-3xl font-semibold tracking-tight text-slate-800">{{ result.totalAssets| currency:'EGP' }}
         </p>
       </div>
       <div class="bg-white rounded-xl shadow p-5">
-        <p class="text-sm font-medium text-slate-500">إجمالي التزامات (الأخيرة)</p>
+        <p class="text-sm font-medium text-slate-500">إجمالي التزامات</p>
         <p class="mt-1 text-3xl font-semibold tracking-tight text-slate-800">{{ result.totalLiabilities| currency:'EGP'
           }}</p>
       </div>
@@ -68,7 +68,7 @@
         <!-- Zakah Status Card -->
         @if (result.zakahAmount > 0) {
         <div class="bg-white rounded-xl shadow-lg p-6 sm:p-8">
-          <h3 class="text-lg font-semibold text-slate-600">الزكاة المستحقة</h3>
+          <h3 class="text-lg font-semibold text-slate-600">{{ zakahStatusMessageMap[result.status] }}</h3>
           <p class="text-5xl font-extrabold text-emerald-600 tracking-tight">{{ result.zakahAmount | currency:'EGP' }}
           </p>
           <p class="text-slate-500 mt-1">لتاريخ الميزانية: {{ result.balanceSheetDate | date }}</p>
@@ -162,14 +162,14 @@
 
 
 
-            <dt class="p-4 sm:p-6 font-semibold text-yellow-700 bg-yellow-50 border-b border-t border-yellow-400">
-              صافي الربح
-            </dt>
-            @if(result.netProfit > 0) { <dd class="flex justify-between items-center p-4 sm:px-6"><span
-                class="text-slate-600">       (netProfit)  صافي الربح
+<!--            <dt class="p-4 sm:p-6 font-semibold text-yellow-700 bg-yellow-50 border-b border-t border-yellow-400">-->
+<!--              صافي الربح-->
+<!--            </dt>-->
+<!--            @if(result.netProfit > 0) { <dd class="flex justify-between items-center p-4 sm:px-6"><span-->
+<!--                class="text-slate-600">       (netProfit)  صافي الربح-->
 
-              </span><span class="font-medium text-slate-800">{{ result.netProfit | currency:'EGP' }}</span></dd>
-            }
+<!--              </span><span class="font-medium text-slate-800">{{ result.netProfit | currency:'EGP' }}</span></dd>-->
+<!--            }-->
 
           </dl>
         </div>
@@ -191,10 +191,10 @@
                       [class.text-slate-700]="item.zakahAmount === 0">{{ item.zakahAmount | currency:'EGP' }}</p>
                     <p class="text-sm text-slate-500">حُسب في {{ item.balanceSheetDate | date:'yyyy-MM-dd' }}</p>
                   </div>
-                  <span class="px-3 py-1 text-xs font-medium rounded-full" [class.bg-emerald-100]="item.zakahAmount > 0"
-                    [class.text-emerald-800]="item.zakahAmount > 0" [class.bg-slate-100]="item.zakahAmount === 0"
-                    [class.text-slate-800]="item.zakahAmount === 0">
-                    {{ item.zakahAmount > 0 ? 'مستحقة' : 'غير مستحقة' }}
+                  <span class="px-3 py-1 text-xs font-medium rounded-full" [class.bg-emerald-100]="isZakahDue(item.status)"
+                    [class.text-emerald-800]="isZakahDue(item.status)" [class.bg-slate-100]="!isZakahDue(item.status)"
+                    [class.text-slate-800]="!isZakahDue(item.status)">
+                    {{ isZakahDue(item.status) ? 'مستحقة' : 'غير مستحقة' }}
                   </span>
                 </div>
               </button>

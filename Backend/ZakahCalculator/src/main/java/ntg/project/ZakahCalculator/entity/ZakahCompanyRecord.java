@@ -20,9 +20,9 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class ZakahCompanyRecord extends ZakahRecord {
-    //Items from Income Statment
-    @Column(precision = 15, scale = 2)
-    private BigDecimal netProfit;
+//    //Items from Income Statment
+//    @Column(precision = 15, scale = 2)
+//    private BigDecimal netProfit;
 
     // Assets
     @Column(name = "cash_equivalents", precision = 15, scale = 2)

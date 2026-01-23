@@ -21,10 +21,10 @@ public class ZakahCompanyRecordRequest {
     @PositiveOrZero(message = "من فضلك أدخل رقمًا أكبر من أو يساوي صفر.")
     private BigDecimal goldPrice;
 
-    //Income Statment Items
-    @NotNull(message = "هذا الحقل مطلوب، من فضلك لا تتركه فارغًا.")
-    @PositiveOrZero(message = "من فضلك أدخل رقمًا أكبر من أو يساوي صفر.")
-    private BigDecimal netProfit;//new item
+//    //Income Statment Items
+//    @NotNull(message = "هذا الحقل مطلوب، من فضلك لا تتركه فارغًا.")
+//    @PositiveOrZero(message = "من فضلك أدخل رقمًا أكبر من أو يساوي صفر.")
+//    private BigDecimal netProfit;//new item
 
     //Assets
     @NotNull(message = "هذا الحقل مطلوب، من فضلك لا تتركه فارغًا.")

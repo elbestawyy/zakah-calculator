@@ -8,6 +8,7 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 import { AuthStorageService } from '../../../services/storage-service/StorageService';
+import {ZakahStatus} from '../../../models/enums/ZakahStatus';
 
 
 @Component({
@@ -102,5 +103,27 @@ export class DashboardComponent implements OnInit {
     if (!h.length) return 0;
     return h.reduce((sum, i) => sum + i.zakahAmount, 0) / h.length;
   });
+
+  isZakahDue(status: ZakahStatus): boolean {
+    return status === ZakahStatus.ZAKAH_DUE
+      || status === ZakahStatus.LAST_RECORD_DUE_AND_NEW_HAWL_BEGIN;
+  }
+
+  zakahStatusMessageMap: Record<ZakahStatus, string> = {
+    [ZakahStatus.BELOW_NISAB]:
+      'المال أقل من النصاب، ولا تجب عليه الزكاة',
+
+    [ZakahStatus.ELIGABLE_FOR_ZAKAH]:
+      'المال بلغ النصاب، في انتظار اكتمال الحول',
+
+    [ZakahStatus.HAWL_NOT_COMPLETED]:
+      'الحول لم يكتمل بعد، الزكاة غير مستحقة حاليًا',
+
+    [ZakahStatus.ZAKAH_DUE]:
+      'الزكاة مستحقة ويجب إخراجها الآن',
+
+    [ZakahStatus.LAST_RECORD_DUE_AND_NEW_HAWL_BEGIN]:
+      'تم إخراج زكاة الحول السابق وبدأ حول جديد',
+  };
 
 }

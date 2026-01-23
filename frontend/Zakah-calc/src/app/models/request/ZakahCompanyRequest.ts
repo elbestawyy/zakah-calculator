@@ -4,7 +4,6 @@ export interface ZakahCompanyRecordRequest {
 
   // Zakah Info
   goldPrice: number;
-  netProfit: number; // new item
 
   // Assets
   cashEquivalents: number;
@@ -21,4 +20,3 @@ export interface ZakahCompanyRecordRequest {
   contraAssets: number; // new item
   provisionsUnderLiabilities: number; // new item
 }
- 

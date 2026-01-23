@@ -12,21 +12,8 @@
         <h2 class="text-lg font-semibold text-slate-600">زكاتك المستحقة هي</h2>
         <p class="text-5xl font-extrabold text-emerald-600 tracking-tight mt-2">
           {{ result.zakahAmount | currency:'EGP' }}
-        </p> 
-
-        <!-- @switch (result.status) {
-        @case ('ZAKAH_DUE') {
-        <p class="text-slate-500 mt-1">الحمد لله! .وصلت زكاة مالك لحد النصاب و تم انتهاء الحول
-          لمراجعة المبلغ و اخراج الزكاة انتقل إلى لوحة التحكم للحصول على تفصيل كامل.</p>
-        }
-        @case ('HAWL_NOT_COMPLETED') {
-        <p class="text-slate-500 mt-1">الحمد لله، لا تجب عليك الزكاة. ثروتك فوق النصاب، لذا يبدأ حولك (السنة القمرية)
-          الآن.</p>
-        }
-        @case ('BELOW_NISAB') {
-        <p class="text-slate-500 mt-1">الحمد لله، لا تجب عليك الزكاة لأن ثروتك أقل من حد النصاب.</p>
-        }
-        } -->
+        </p>
+        <p class="text-slate-500 mt-1"> {{ zakahStatusMessageMap[result.status] }}</p>
       </div>
     </div>
 

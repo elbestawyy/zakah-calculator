@@ -65,7 +65,6 @@ export class ZakahSoftwareCompanyExcelService {
             /* ========= META ========= */
             balanceSheetDate: this.formatDate(new Date()),
             goldPrice: 75.21,
-            netProfit: 0
           };
 
           console.log('Excel parsed as SoftwareCompanyModel:', result);

@@ -125,4 +125,26 @@ export class DashIndividualComponent implements OnInit {
   });
 
   protected readonly ZakahStatus = ZakahStatus;
+
+  zakahStatusMessageMap: Record<ZakahStatus, string> = {
+    [ZakahStatus.BELOW_NISAB]:
+      'المال أقل من النصاب، ولا تجب عليه الزكاة',
+
+    [ZakahStatus.ELIGABLE_FOR_ZAKAH]:
+      'المال بلغ النصاب، في انتظار اكتمال الحول',
+
+    [ZakahStatus.HAWL_NOT_COMPLETED]:
+      'الحول لم يكتمل بعد، الزكاة غير مستحقة حاليًا',
+
+    [ZakahStatus.ZAKAH_DUE]:
+      'الزكاة مستحقة ويجب إخراجها الآن',
+
+    [ZakahStatus.LAST_RECORD_DUE_AND_NEW_HAWL_BEGIN]:
+      'تم إخراج زكاة الحول السابق وبدأ حول جديد',
+  };
+
+  isZakahDue(status: ZakahStatus): boolean {
+    return status === ZakahStatus.ZAKAH_DUE
+      || status === ZakahStatus.LAST_RECORD_DUE_AND_NEW_HAWL_BEGIN;
+  }
 }
