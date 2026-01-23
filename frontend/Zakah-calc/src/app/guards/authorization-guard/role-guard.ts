@@ -24,7 +24,7 @@ export const roleGuard: CanActivateFn = (route, state) => {
   }
 
   /* ================= COMPANY ================= */
-  if (
+  else if (
     url.startsWith('/company') &&
     userType !== UserType.ROLE_COMPANY &&
     userType !== UserType.ROLE_COMPANY_SOFTWARE

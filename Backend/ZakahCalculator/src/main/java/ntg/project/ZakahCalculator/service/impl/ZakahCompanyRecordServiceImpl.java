@@ -176,8 +176,12 @@ public class ZakahCompanyRecordServiceImpl implements ZakahCompanyRecordService 
             return ZakahStatus.BELOW_NISAB;
         }
 
+        List<ZakahStatus> excludeStatus = List.of(
+                ZakahStatus.HAWL_NOT_COMPLETED,
+                ZakahStatus.BELOW_NISAB
+        );
         return recordRepository
-                .findTopByUserIdOrderByBalanceSheetDateDesc(userId)
+                .findTopByUserIdAndStatusNotInOrderByBalanceSheetDateDesc(userId,excludeStatus)
                 .map(last -> {
                     long days = ChronoUnit.DAYS.between(
                             last.getBalanceSheetDate(),

@@ -28,7 +28,12 @@ public interface ZakahCompanyRecordRepository
 
     //Get the latest balance sheet record by user id
     Optional<ZakahCompanyRecord> findTopByUserIdAndStatusInOrderByBalanceSheetDateDesc(Long userId,List<ZakahStatus> statuses);
-    Optional<ZakahCompanyRecord> findTopByUserIdOrderByBalanceSheetDateDesc(Long userId);
+    Optional<ZakahCompanyRecord>
+    findTopByUserIdAndStatusNotInOrderByBalanceSheetDateDesc(
+            Long userId,
+            List<ZakahStatus> excludedStatuses
+    );
+
 
 
 }

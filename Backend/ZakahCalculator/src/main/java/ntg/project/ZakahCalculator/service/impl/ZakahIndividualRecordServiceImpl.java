@@ -70,11 +70,11 @@ public class ZakahIndividualRecordServiceImpl implements ZakahIndividualRecordSe
         } else {
             zakahAmount = zakahPool.multiply(ZAKAH_RATE);
             List<ZakahStatus> statuses = Arrays.asList(
-                    ZakahStatus.ELIGABLE_FOR_ZAKAH,
-                    ZakahStatus.LAST_RECORD_DUE_AND_NEW_HAWL_BEGIN
+                    ZakahStatus.HAWL_NOT_COMPLETED,
+                    ZakahStatus.BELOW_NISAB
             );
             Optional<ZakahIndividualRecord> lastRecordOpt =
-                    repository.findTopByUserIdAndStatusInOrderByCalculationDateDesc(userId,statuses);
+                    repository.findTopByUserIdAndStatusNotInOrderByCalculationDateDesc(userId,statuses);
 
             if (lastRecordOpt.isPresent()) {
                 ZakahIndividualRecord lastRecord = lastRecordOpt.get();

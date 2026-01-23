@@ -4,6 +4,8 @@ import { CurrencyPipe } from '@angular/common';
 import { ZakahCompanyRecordSummaryResponse } from '../../../models/response/ZakahCompanyResponse';
 import { Router } from '@angular/router';
 import {ZakahStatus} from '../../../models/enums/ZakahStatus';
+import {AuthStorageService} from '../../../services/storage-service/StorageService';
+import {UserType} from '../../../models/enums/UserType';
 
 @Component({
   selector: 'app-after-calc',
@@ -12,6 +14,7 @@ import {ZakahStatus} from '../../../models/enums/ZakahStatus';
   styleUrls: ['./after-calc.component.css']
 })
 export class AfterCalcComponent implements OnInit {
+  type = AuthStorageService.getUserType();
   router = inject(Router);
   constructor() { }
   _zakahService = inject(ZakahCompanyRecordService);
@@ -31,7 +34,11 @@ export class AfterCalcComponent implements OnInit {
 
   onStartNewCalculation() {
   this._zakahService.latestResult.set(null);
-  this.router.navigate(['/company/wizard']); // go back to wizard
+    if (this.type === UserType.ROLE_COMPANY) {
+      this.router.navigate(['/company/wizard']);
+    } else {
+      this.router.navigate(['/company/company-software/wizard']);
+    }
 }
 
   zakahStatusMessageMap: Record<ZakahStatus, string> = {

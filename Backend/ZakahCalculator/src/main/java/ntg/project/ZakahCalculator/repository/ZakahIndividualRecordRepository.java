@@ -24,5 +24,11 @@ public interface ZakahIndividualRecordRepository extends JpaRepository<ZakahIndi
     // Get the latest individual zakah record by user id
     Optional<ZakahIndividualRecord> findTopByUserIdOrderByCalculationDateDesc(Long userId);
 
-    Optional<ZakahIndividualRecord> findTopByUserIdAndStatusInOrderByCalculationDateDesc(Long userId, List<ZakahStatus> statuses);
+    Optional<ZakahIndividualRecord>
+    findTopByUserIdAndStatusNotInOrderByCalculationDateDesc(
+            Long userId,
+            List<ZakahStatus> excludedStatuses
+    );
+
+
 }
