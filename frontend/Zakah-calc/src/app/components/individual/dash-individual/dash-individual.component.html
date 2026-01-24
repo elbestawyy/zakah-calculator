@@ -102,7 +102,7 @@
           </div>
           <p class="text-3xl font-bold text-green-700">الزكاة غير مستحقة</p>
           @if (result.status === ZakahStatus.BELOW_NISAB) { <p class="text-slate-500 mt-2">وعاؤك الزكوي البالغ <span
-              class="font-semibold">{{ result.totalAssets| currency:'EGP' }}</span> أقل من حد النصاب.</p>
+              class="font-semibold">{{ result.zakahPool| currency:'EGP' }}</span> أقل من حد النصاب.</p>
             } @else {
             <p class="text-slate-500 mt-2">وعاؤك الزكوي هو صفر أو أقل.</p>
             }
