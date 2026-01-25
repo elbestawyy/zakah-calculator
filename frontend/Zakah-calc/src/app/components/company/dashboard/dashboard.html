@@ -121,6 +121,12 @@
                 class="text-slate-600"> النقد و مشتملاته (Cash Equivalents )
               </span><span class="font-medium text-slate-800">{{ result.cashEquivalents | currency:'EGP' }}</span></dd>
             }
+            @if(result.generatingFixedAssets) { <dd class="flex justify-between items-center p-4 sm:px-6"><span
+                class="text-slate-600">
+                الموجودات الثابتة الدائرة للدخل (Generation Income for Fixed Assets)
+              </span><span class="font-medium text-slate-800">{{ result.generatingFixedAssets | currency:'EGP' }}</span>
+            </dd>
+            }
             @if(result.investment > 0) { <dd
               class="flex justify-between items-center p-4 sm:px-6 border-t border-slate-100"><span
                 class="text-slate-600">الاستثمارات بنوعها (Investments )
@@ -159,17 +165,30 @@
                 class="text-slate-600"> الالتزامات طويلة الأجل الجزء السنوي ( Yearly Long-term Liabilities)</span><span
                 class="font-medium text-slate-800">({{
                 result.yearlyLongTermLiabilities | currency:'EGP' }})</span></dd> }
+            @if(result.contraAssets > 0) { <dd
+              class="flex justify-between items-center p-4 sm:px-6 border-t border-slate-100"><span
+                class="text-slate-600">
+                حسابات مقابلة للأصول (Contra Assets)
+              </span><span class="font-medium text-slate-800">({{
+                result.contraAssets | currency:'EGP' }})</span></dd> }
+            @if(result.provisionsUnderLiabilities > 0) { <dd
+              class="flex justify-between items-center p-4 sm:px-6 border-t border-slate-100"><span
+                class="text-slate-600">
+                الالتزامات المحتملة المقدّرة (Provisions Under Liabilities)
+
+              </span><span class="font-medium text-slate-800">({{
+                result.provisionsUnderLiabilities | currency:'EGP' }})</span></dd> }
 
 
 
-<!--            <dt class="p-4 sm:p-6 font-semibold text-yellow-700 bg-yellow-50 border-b border-t border-yellow-400">-->
-<!--              صافي الربح-->
-<!--            </dt>-->
-<!--            @if(result.netProfit > 0) { <dd class="flex justify-between items-center p-4 sm:px-6"><span-->
-<!--                class="text-slate-600">       (netProfit)  صافي الربح-->
+            <!--            <dt class="p-4 sm:p-6 font-semibold text-yellow-700 bg-yellow-50 border-b border-t border-yellow-400">-->
+            <!--              صافي الربح-->
+            <!--            </dt>-->
+            <!--            @if(result.netProfit > 0) { <dd class="flex justify-between items-center p-4 sm:px-6"><span-->
+            <!--                class="text-slate-600">       (netProfit)  صافي الربح-->
 
-<!--              </span><span class="font-medium text-slate-800">{{ result.netProfit | currency:'EGP' }}</span></dd>-->
-<!--            }-->
+            <!--              </span><span class="font-medium text-slate-800">{{ result.netProfit | currency:'EGP' }}</span></dd>-->
+            <!--            }-->
 
           </dl>
         </div>
@@ -191,9 +210,9 @@
                       [class.text-slate-700]="item.zakahAmount === 0">{{ item.zakahAmount | currency:'EGP' }}</p>
                     <p class="text-sm text-slate-500">حُسب في {{ item.balanceSheetDate | date:'yyyy-MM-dd' }}</p>
                   </div>
-                  <span class="px-3 py-1 text-xs font-medium rounded-full" [class.bg-emerald-100]="isZakahDue(item.status)"
-                    [class.text-emerald-800]="isZakahDue(item.status)" [class.bg-slate-100]="!isZakahDue(item.status)"
-                    [class.text-slate-800]="!isZakahDue(item.status)">
+                  <span class="px-3 py-1 text-xs font-medium rounded-full"
+                    [class.bg-emerald-100]="isZakahDue(item.status)" [class.text-emerald-800]="isZakahDue(item.status)"
+                    [class.bg-slate-100]="!isZakahDue(item.status)" [class.text-slate-800]="!isZakahDue(item.status)">
                     {{ isZakahDue(item.status) ? 'مستحقة' : 'غير مستحقة' }}
                   </span>
                 </div>

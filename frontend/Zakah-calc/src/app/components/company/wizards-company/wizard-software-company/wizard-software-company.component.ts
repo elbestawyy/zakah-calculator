@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { ZakahCompanyRecordRequest } from '../../../../models/request/ZakahCompanyRequest';
 import { ZakahCompanyExcelService } from '../../../../services/zakah-company-service/zakah-company-excel-service';
@@ -91,6 +91,13 @@ export class WizardSoftwareCompanyComponent implements OnInit {
       return 'هذا الحقل مطلوب';
     }
 
+    if (key === 'goldPrice') {
+      if (!value || Number(value) === 0) {
+        return 'سعر الذهب لا يمكن أن يكون صفر';
+      }
+    }
+
+
     if (typeof value === 'string' && isNaN(Number(value))) {
       return 'من فضلك أدخل رقمًا صحيحًا';
     }
@@ -103,6 +110,13 @@ export class WizardSoftwareCompanyComponent implements OnInit {
 
     return null;
   }
+
+  isNextDisabled = computed(() => {
+    if (this.steps()[this.currentStep()] === 'التفاصيل') {
+      return this.softwareFormData().goldPrice <= 0;
+    }
+    return false;
+  });
 
 
   onInputChange(event: Event): void {
@@ -213,9 +227,9 @@ export class WizardSoftwareCompanyComponent implements OnInit {
   // ================= Wizard =================
 
   next(): void {
+    if (this.isNextDisabled()) return;
     this.zakahService.nextStep();
   }
-
   back(): void {
     this.zakahService.prevStep();
   }
@@ -264,32 +278,32 @@ export class WizardSoftwareCompanyComponent implements OnInit {
   }
 
   onNumberInput(event: Event) {
-  const input = event.target as HTMLInputElement;
+    const input = event.target as HTMLInputElement;
 
-  let value = input.value;
+    let value = input.value;
 
-  // إزالة أي شيء غير رقم أو نقطة
-  value = value.replace(/[^0-9.]/g, '');
+    // إزالة أي شيء غير رقم أو نقطة
+    value = value.replace(/[^0-9.]/g, '');
 
-  // منع أكثر من نقطة
-  const parts = value.split('.');
-  if (parts.length > 2) {
-    value = parts[0] + '.' + parts.slice(1).join('');
+    // منع أكثر من نقطة
+    const parts = value.split('.');
+    if (parts.length > 2) {
+      value = parts[0] + '.' + parts.slice(1).join('');
+    }
+
+    input.value = value;
+
+    this.zakahService.updateSoftwareFormData({
+      [input.name]: value === '' ? 0 : Number(value)
+    });
   }
 
-  input.value = value;
-
-  this.zakahService.updateSoftwareFormData({
-    [input.name]: value === '' ? 0 : Number(value)
-  });
-}
-
-blockInvalidNumberKeys(event: KeyboardEvent) {
-  const invalidKeys = ['e', 'E', '+', '-'];
-  if (invalidKeys.includes(event.key)) {
-    event.preventDefault();
+  blockInvalidNumberKeys(event: KeyboardEvent) {
+    const invalidKeys = ['e', 'E', '+', '-'];
+    if (invalidKeys.includes(event.key)) {
+      event.preventDefault();
+    }
   }
-}
 
 
 }

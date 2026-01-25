@@ -137,7 +137,7 @@ export class AuthStorageService {
 
   static isDeleted(): boolean {
     const user = this.getUser();
-    console.log(user);
+    // console.log(user);
     if (!user) return false;
 
     return Boolean(user.deleted);

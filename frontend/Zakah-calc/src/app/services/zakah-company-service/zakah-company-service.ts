@@ -57,13 +57,13 @@ export class ZakahCompanyRecordService {
 
 
   calculate(): Observable<ZakahCompanyRecordResponse> {
-    console.log('entering service')
+    // console.log('entering service')
     const data = this.formData();
     let request: ZakahCompanyRecordRequest = {} as ZakahCompanyRecordRequest;
-    console.log('entering conditions')
+    // console.log('entering conditions')
 
     if (this.companyType === 'ROLE_COMPANY') {
-      console.log('entering ROLE_COMPANY')
+      // console.log('entering ROLE_COMPANY')
       request = {
         balanceSheetDate: data.balanceSheetDate,
         cashEquivalents: data.cashEquivalents,
@@ -82,7 +82,7 @@ export class ZakahCompanyRecordService {
       };
     } else if (this.companyType === 'ROLE_COMPANY_SOFTWARE') {
       const softwareData = this.formSoftwareData(); // 🔴 **تغيير مهم هنا**
-      console.log('entering ROLE_COMPANY_SOFTWARE')
+      // console.log('entering ROLE_COMPANY_SOFTWARE')
 
 
       request = {
@@ -108,14 +108,14 @@ export class ZakahCompanyRecordService {
         goldPrice: softwareData.goldPrice,
       };
     }
-    console.log('after conditions');
+    // console.log('after conditions');
 
-    console.log(request);
+    // console.log(request);
 
     return this.http.post<ZakahCompanyRecordResponse>(`${this.BASE_URL}/calculate`, request)
       .pipe(
         tap(response => {
-          console.log(response)
+          // console.log(response)
           this.latestResult.set(response);
           this.history.update(h => [response, ...h]);
           this.resetForm();
