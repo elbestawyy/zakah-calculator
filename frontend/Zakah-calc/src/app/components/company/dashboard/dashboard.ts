@@ -30,35 +30,42 @@ export class DashboardComponent implements OnInit {
   _role = AuthStorageService.getUserType()
 
   ngOnInit() {
-    this.spinner.show();
-    // تحميل البيانات وتحديث الـ signals في الخدمة
-    this.zakahService.getAllSummaries().subscribe({
-      next: (list) => {
-        this.zakahService.history.set(list); // تحديث الخدمة
+  this.spinner.show();
+
+  this.zakahService.getAllSummaries().subscribe({
+    next: (list) => {
+      this.zakahService.history.set(list);
+
+      if (list && list.length > 0) {
         this.loadFullRecord(list[0].id);
-
-        this.isLoading.set(false);
-        setTimeout(() => {
-          if (!this.isLoading()) {
-            this.spinner.hide();
-          }
-        }, 1000); // 🔹 إخفاء الـ spinner
-
-      },
-      error: (err) => {
-        console.error('Error loading summaries:', err);
-        // this.isLoading.set(false);
-        this.spinner.hide();
+      } else {
+        console.warn('No records found');
+        this.zakahService.latestResult.set(null);
       }
-    });
-  }
+
+      this.isLoading.set(false);
+
+      setTimeout(() => {
+        if (!this.isLoading()) {
+          this.spinner.hide();
+        }
+      }, 1000);
+    },
+    error: (err) => {
+      console.error('Error loading summaries:', err);
+      this.spinner.hide();
+    }
+  });
+}
+
 
 
 
   private loadFullRecord(id: number) {
     this.zakahService.loadById(id).subscribe({
       next: (res) => {
-        console.log('Data Received from API:', res); // تأكد من مسميات الحقول هنا في الكونسول
+        // console.log('Data Received from API:', res); 
+        // تأكد من مسميات الحقول هنا في الكونسول
         // نقوم بعمل تصفير مؤقت ثم وضع القيمة الجديدة لضمان استجابة الـ Signal
         this.zakahService.latestResult.set(null);
         setTimeout(() => {

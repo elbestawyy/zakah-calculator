@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject, OnInit,
   signal
 } from '@angular/core';
@@ -10,7 +11,7 @@ import { ZakahCompanyExcelService } from '../../../../services/zakah-company-ser
 import { TooltipComponent } from '../../../../shared/tooltip/tooltip';
 import { ZakahCompanyRecordRequest } from '../../../../models/request/ZakahCompanyRequest';
 import { Router } from '@angular/router';
-import {SoftwareCompanyModel} from '../../../../models/software-company-model';
+import { SoftwareCompanyModel } from '../../../../models/software-company-model';
 
 @Component({
   selector: 'app-wizard',
@@ -85,6 +86,12 @@ export class ZakahCompanyRecordComponent implements OnInit {
       return value ? null : 'يرجى اختيار تاريخ';
     }
 
+    if (key === 'goldPrice') {
+      if (!value || Number(value) === 0) {
+        return 'سعر الذهب لا يمكن أن يكون صفر';
+      }
+    }
+
     if (value === null || value === undefined || value === '') {
       return 'هذا الحقل مطلوب';
     }
@@ -101,6 +108,24 @@ export class ZakahCompanyRecordComponent implements OnInit {
 
     return null;
   }
+  validateGoldPrice() {
+  const value = this.formData().goldPrice;
+  const error = this.validateField('goldPrice', value);
+
+  this.fieldErrors.update(errors => ({
+    ...errors,
+    goldPrice: error || undefined
+  }));
+}
+
+  isNextDisabled = computed(() => {
+    // لو إحنا في خطوة "التفاصيل"
+    if (this.steps()[this.currentStep()] === 'التفاصيل') {
+      return this.formData().goldPrice <= 0;
+    }
+    return false;
+  });
+
 
   onInputChange(event: Event): void {
     const target = event.target as HTMLInputElement;
@@ -249,32 +274,32 @@ export class ZakahCompanyRecordComponent implements OnInit {
     return dateStr;
   }
 
-    onNumberInput(event: Event) {
-  const input = event.target as HTMLInputElement;
+  onNumberInput(event: Event) {
+    const input = event.target as HTMLInputElement;
 
-  let value = input.value;
+    let value = input.value;
 
-  // إزالة أي شيء غير رقم أو نقطة
-  value = value.replace(/[^0-9.]/g, '');
+    // إزالة أي شيء غير رقم أو نقطة
+    value = value.replace(/[^0-9.]/g, '');
 
-  // منع أكثر من نقطة
-  const parts = value.split('.');
-  if (parts.length > 2) {
-    value = parts[0] + '.' + parts.slice(1).join('');
+    // منع أكثر من نقطة
+    const parts = value.split('.');
+    if (parts.length > 2) {
+      value = parts[0] + '.' + parts.slice(1).join('');
+    }
+
+    input.value = value;
+
+    this.zakahService.updateFormData({
+      [input.name]: value === '' ? 0 : Number(value)
+    });
   }
 
-  input.value = value;
-
-  this.zakahService.updateFormData({
-    [input.name]: value === '' ? 0 : Number(value)
-  });
-}
-
-blockInvalidNumberKeys(event: KeyboardEvent) {
-  const invalidKeys = ['e', 'E', '+', '-'];
-  if (invalidKeys.includes(event.key)) {
-    event.preventDefault();
+  blockInvalidNumberKeys(event: KeyboardEvent) {
+    const invalidKeys = ['e', 'E', '+', '-'];
+    if (invalidKeys.includes(event.key)) {
+      event.preventDefault();
+    }
   }
-}
 
 }
