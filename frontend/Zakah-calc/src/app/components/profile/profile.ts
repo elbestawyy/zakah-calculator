@@ -11,6 +11,7 @@ import {
 import { ProfileUpdateResponse } from '../../models/response/IAuthResponse';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth-service/auth.service';
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-profile',
@@ -70,7 +71,7 @@ export class Profile implements OnInit {
     }
   }
 
-   togglePassword() {
+  togglePassword() {
     this.showPassword.set(!this.showPassword());
   }
 
@@ -163,18 +164,37 @@ export class Profile implements OnInit {
 
   /* ================= DELETE ACCOUNT ================= */
 
-  onDeleteAccount(): void {
-    if (!confirm('هل أنت متأكد من حذف الحساب؟')) return;
+onDeleteAccount(): void {
+  Swal.fire({
+    title: "تأكيد إيقاف الحساب",
+    text: "سيتم إيقاف حسابك مؤقتًا، ويمكنك استعادته خلال مدة أقصاها 30 يومًا عن طريق تسجيل الدخول مرة أخرى وتنفيذ عملية استعادة الحساب (Restore). بعد انتهاء هذه المدة سيتم حذف الحساب نهائيًا ولا يمكن استرجاعه.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "نعم، إيقاف الحساب",
+    cancelButtonText: "إلغاء"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.userService.deleteAccount().subscribe(() => {
 
-    this.userService.deleteAccount().subscribe(() => {
-      confirm('تم حذف الحساب. سيتم توجيهك إلى صفحة استعادة الحساب.');
-      this.deleteAccount.emit();
-      this.authService.logout();
+        Swal.fire({
+          title: "تم إيقاف الحساب",
+          text: "تم إيقاف حسابك بنجاح. يمكنك استعادته خلال 30 يومًا عن طريق تسجيل الدخول مرة أخرى وتنفيذ عملية استعادة الحساب.",
+          icon: "success",
+          confirmButtonText: "حسنًا"
+        }).then(() => {
+          this.deleteAccount.emit();
+          this.authService.logout();
+          this.router.navigate(['/login']);
+        });
 
-      this.router.navigate(['/login']);;
+      });
+    }
+  });
+}
 
-    });
-  }
+
 
 
   // onSave() {

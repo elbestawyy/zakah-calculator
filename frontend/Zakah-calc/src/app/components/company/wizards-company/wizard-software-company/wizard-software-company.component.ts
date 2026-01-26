@@ -6,6 +6,7 @@ import { ZakahCompanyRecordService } from '../../../../services/zakah-company-se
 import { CurrencyPipe } from '@angular/common';
 import { TooltipComponent } from "../../../../shared/tooltip/tooltip";
 import { SoftwareCompanyModel } from '../../../../models/software-company-model';
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-wizard-software-company',
@@ -235,25 +236,36 @@ export class WizardSoftwareCompanyComponent implements OnInit {
   }
 
   calculate(): void {
-    console.log("calculate() function STARTED")
-    if (!this.validateAll()) {
-      console.log("❌ Validation failed!");
-      return;
-    }
+    if (!this.validateAll()) return;
 
     this.errorMessage.set(null);
     this.isCalculating.set(true);
 
-    console.log('before service')
     this.zakahService.calculate().subscribe({
       next: (result) => {
         this.zakahService.latestResult.set(result);
         this.isCalculating.set(false);
-        this.router.navigate(['/company/after-calc']);
+
+        // عرض رسالة نجاح باستخدام SweetAlert
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "تم حفظ البيانات وحساب الزكاة بنجاح",
+          showConfirmButton: false,
+          timer: 1500
+        }).then(() => {
+          // بعد انتهاء الرسالة، الانتقال للصفحة التالية
+          this.router.navigate(['/company/after-calc']);
+        });
       },
       error: (err) => {
-        console.error('Calculation error:', err);
-        this.errorMessage.set('حدث خطأ أثناء حساب الزكاة. يرجى التأكد من البيانات والمحاولة لاحقاً.');
+        const code = err?.error?.code;
+
+        if (code === 'NEGATIVE_ZAKAH_POOL') {
+          this.errorMessage.set('لا يمكن أن يكون رصيد الزكاة سالباً. فالتزاماتك تتجاوز أصولك.');
+        } else {
+          this.errorMessage.set('حدث خطأ أثناء حساب الزكاة. يرجى التأكد من البيانات والمحاولة لاحقاً.');
+        }
         this.isCalculating.set(false);
       },
       complete: () => {
@@ -261,6 +273,7 @@ export class WizardSoftwareCompanyComponent implements OnInit {
       }
     });
   }
+
 
 
   // ================= Display =================

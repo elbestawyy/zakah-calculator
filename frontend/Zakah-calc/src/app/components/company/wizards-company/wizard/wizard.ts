@@ -12,6 +12,7 @@ import { TooltipComponent } from '../../../../shared/tooltip/tooltip';
 import { ZakahCompanyRecordRequest } from '../../../../models/request/ZakahCompanyRequest';
 import { Router } from '@angular/router';
 import { SoftwareCompanyModel } from '../../../../models/software-company-model';
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-wizard',
@@ -109,14 +110,14 @@ export class ZakahCompanyRecordComponent implements OnInit {
     return null;
   }
   validateGoldPrice() {
-  const value = this.formData().goldPrice;
-  const error = this.validateField('goldPrice', value);
+    const value = this.formData().goldPrice;
+    const error = this.validateField('goldPrice', value);
 
-  this.fieldErrors.update(errors => ({
-    ...errors,
-    goldPrice: error || undefined
-  }));
-}
+    this.fieldErrors.update(errors => ({
+      ...errors,
+      goldPrice: error || undefined
+    }));
+  }
 
   isNextDisabled = computed(() => {
     // لو إحنا في خطوة "التفاصيل"
@@ -237,28 +238,46 @@ export class ZakahCompanyRecordComponent implements OnInit {
     this.zakahService.prevStep();
   }
 
-  calculate(): void {
-    if (!this.validateAll()) return;
+calculate(): void {
+  if (!this.validateAll()) return;
 
-    this.errorMessage.set(null);
-    this.isCalculating.set(true);
+  this.errorMessage.set(null);
+  this.isCalculating.set(true);
 
-    this.zakahService.calculate().subscribe({
-      next: (result) => {
-        this.zakahService.latestResult.set(result);
-        this.isCalculating.set(false);
+  this.zakahService.calculate().subscribe({
+    next: (result) => {
+      this.zakahService.latestResult.set(result);
+      this.isCalculating.set(false);
+
+      // عرض رسالة نجاح
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "تم حفظ البيانات وحساب الزكاة بنجاح",
+        showConfirmButton: false,
+        timer: 1500
+      }).then(() => {
+        // بعد انتهاء الرسالة، الانتقال للصفحة التالية
         this.router.navigate(['/company/after-calc']);
-      },
-      error: (err) => {
+      });
+    },
+    error: (err) => {
+      const code = err?.error?.code;
+
+      if (code === 'NEGATIVE_ZAKAH_POOL') {
+        this.errorMessage.set('لا يمكن أن يكون رصيد الزكاة سالباً. فالتزاماتك تتجاوز أصولك.');
+      } else {
         console.error('Calculation error:', err);
         this.errorMessage.set('حدث خطأ أثناء حساب الزكاة. يرجى التأكد من البيانات والمحاولة لاحقاً.');
-        this.isCalculating.set(false);
-      },
-      complete: () => {
-        this.isCalculating.set(false);
       }
-    });
-  }
+      this.isCalculating.set(false);
+    },
+    complete: () => {
+      this.isCalculating.set(false);
+    }
+  });
+}
+
 
   // ================= Display =================
 
