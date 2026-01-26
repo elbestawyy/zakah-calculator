@@ -8,7 +8,8 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 import { AuthStorageService } from '../../../services/storage-service/StorageService';
-import {ZakahStatus} from '../../../models/enums/ZakahStatus';
+import { ZakahStatus } from '../../../models/enums/ZakahStatus';
+import Swal from 'sweetalert2'
 
 
 @Component({
@@ -30,33 +31,33 @@ export class DashboardComponent implements OnInit {
   _role = AuthStorageService.getUserType()
 
   ngOnInit() {
-  this.spinner.show();
+    this.spinner.show();
 
-  this.zakahService.getAllSummaries().subscribe({
-    next: (list) => {
-      this.zakahService.history.set(list);
+    this.zakahService.getAllSummaries().subscribe({
+      next: (list) => {
+        this.zakahService.history.set(list);
 
-      if (list && list.length > 0) {
-        this.loadFullRecord(list[0].id);
-      } else {
-        console.warn('No records found');
-        this.zakahService.latestResult.set(null);
-      }
-
-      this.isLoading.set(false);
-
-      setTimeout(() => {
-        if (!this.isLoading()) {
-          this.spinner.hide();
+        if (list && list.length > 0) {
+          this.loadFullRecord(list[0].id);
+        } else {
+          console.warn('No records found');
+          this.zakahService.latestResult.set(null);
         }
-      }, 1000);
-    },
-    error: (err) => {
-      console.error('Error loading summaries:', err);
-      this.spinner.hide();
-    }
-  });
-}
+
+        this.isLoading.set(false);
+
+        setTimeout(() => {
+          if (!this.isLoading()) {
+            this.spinner.hide();
+          }
+        }, 1000);
+      },
+      error: (err) => {
+        console.error('Error loading summaries:', err);
+        this.spinner.hide();
+      }
+    });
+  }
 
 
 
@@ -90,18 +91,34 @@ export class DashboardComponent implements OnInit {
     this.isViewingHistory.set(false);
   }
 
-  confirmDelete(id: number) {
-    if (confirm('هل أنت متأكد من رغبتك في حذف هذا السجل نهائياً؟')) {
+confirmDelete(id: number) {
+  Swal.fire({
+    title: "تأكيد الحذف",
+    text: "هل أنت متأكد من أنك تريد حذف هذا السجل نهائيًا؟ لا يمكن التراجع عن هذا الإجراء.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "نعم، حذف",
+    cancelButtonText: "إلغاء"
+  }).then((result) => {
+    if (result.isConfirmed) {
       this.zakahService.deleteRecord(id);
-
+      Swal.fire({
+        title: "تم الحذف بنجاح",
+        text: "تم حذف السجل بنجاح.",
+        icon: "success"
+      });
     }
-  }
+  });
+}
+
   // 🔹 حساب جديد
   onStartNew() {
-    if(this._role === 'ROLE_COMPANY'){
+    if (this._role === 'ROLE_COMPANY') {
       this.router.navigate(['/company/wizard']);
-    }else if(this._role === 'ROLE_COMPANY_SOFTWARE'){
-      this.router.navigate(['/company-software/wizard']);
+    } else if (this._role === 'ROLE_COMPANY_SOFTWARE') {
+      this.router.navigate(['/company/company-software/wizard']);
     }
   }
 

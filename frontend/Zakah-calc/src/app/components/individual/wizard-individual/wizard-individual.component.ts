@@ -1,9 +1,10 @@
-import {Component, inject, signal} from '@angular/core';
-import {ZakahIndividualRecordRequest} from '../../../models/request/ZakahIndividualRequest';
-import {ZakahIndividualRecordService} from '../../../services/zakah-individual-service/zakah-individual-service';
-import {Router} from '@angular/router';
-import {CurrencyPipe} from '@angular/common';
-import {TooltipComponent} from "../../../shared/tooltip/tooltip";
+import { Component, inject, signal } from '@angular/core';
+import { ZakahIndividualRecordRequest } from '../../../models/request/ZakahIndividualRequest';
+import { ZakahIndividualRecordService } from '../../../services/zakah-individual-service/zakah-individual-service';
+import { Router } from '@angular/router';
+import { CurrencyPipe } from '@angular/common';
+import { TooltipComponent } from "../../../shared/tooltip/tooltip";
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-wizard-individual',
@@ -34,7 +35,7 @@ export class WizardIndividualComponent {
     const currentData = this.formData();
     if (!currentData.calculationDate) {
       const today = new Date().toISOString().split('T')[0];
-      this.zakahService.updateFormData({calculationDate: today});
+      this.zakahService.updateFormData({ calculationDate: today });
     }
   }
 
@@ -83,7 +84,7 @@ export class WizardIndividualComponent {
 
   onDateChange(event: Event): void {
     const value = (event.target as HTMLInputElement).value;
-    this.zakahService.updateFormData({calculationDate: value});
+    this.zakahService.updateFormData({ calculationDate: value });
     this.fieldErrors.update(errors => ({
       ...errors,
       calculationDate: value ? undefined : 'يرجى اختيار تاريخ'
@@ -121,29 +122,45 @@ export class WizardIndividualComponent {
     this.zakahService.prevStep();
   }
 
-  calculate(): void {
-    if (!this.validateAll()) return;
+calculate(): void {
+  if (!this.validateAll()) return;
 
-    this.errorMessage.set(null);
-    this.isCalculating.set(true);
+  this.errorMessage.set(null);
+  this.isCalculating.set(true);
 
-    this.zakahService.calculate().subscribe({
-      next: (result) => {
-        console.log('Calculation result:', result);
-        this.zakahService.latestResult.set(result);
-        this.isCalculating.set(false);
+  this.zakahService.calculate().subscribe({
+    next: (result) => {
+      this.zakahService.latestResult.set(result);
+      this.isCalculating.set(false);
+
+      // عرض رسالة نجاح
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "تم حفظ البيانات وحساب الزكاة بنجاح",
+        showConfirmButton: false,
+        timer: 1500
+      }).then(() => {
         this.router.navigate(['/individual/after-calc']);
-      },
-      error: (err) => {
-        console.error('Calculation error:', err);
+      });
+    },
+    error: (err) => {
+      const code = err?.error?.code;
+
+      if (code === 'NEGATIVE_ZAKAH_POOL') {
+        this.errorMessage.set('لا يمكن أن يكون رصيد الزكاة سالباً. فالتزاماتك تتجاوز أصولك.');
+      } else {
         this.errorMessage.set('حدث خطأ أثناء حساب الزكاة. يرجى التأكد من البيانات والمحاولة لاحقاً.');
-        this.isCalculating.set(false);
-      },
-      complete: () => {
-        this.isCalculating.set(false);
       }
-    });
-  }
+
+      this.isCalculating.set(false);
+    },
+    complete: () => {
+      this.isCalculating.set(false);
+    }
+  });
+}
+
 
   // ================= Display =================
   formatDateForDisplay(dateStr: string): string {
@@ -156,31 +173,31 @@ export class WizardIndividualComponent {
     return dateStr;
   }
 
-    onNumberInput(event: Event) {
-  const input = event.target as HTMLInputElement;
+  onNumberInput(event: Event) {
+    const input = event.target as HTMLInputElement;
 
-  let value = input.value;
+    let value = input.value;
 
-  // إزالة أي شيء غير رقم أو نقطة
-  value = value.replace(/[^0-9.]/g, '');
+    // إزالة أي شيء غير رقم أو نقطة
+    value = value.replace(/[^0-9.]/g, '');
 
-  // منع أكثر من نقطة
-  const parts = value.split('.');
-  if (parts.length > 2) {
-    value = parts[0] + '.' + parts.slice(1).join('');
+    // منع أكثر من نقطة
+    const parts = value.split('.');
+    if (parts.length > 2) {
+      value = parts[0] + '.' + parts.slice(1).join('');
+    }
+
+    input.value = value;
+
+    this.zakahService.updateFormData({
+      [input.name]: value === '' ? 0 : Number(value)
+    });
   }
 
-  input.value = value;
-
-  this.zakahService.updateFormData({
-    [input.name]: value === '' ? 0 : Number(value)
-  });
-}
-
-blockInvalidNumberKeys(event: KeyboardEvent) {
-  const invalidKeys = ['e', 'E', '+', '-'];
-  if (invalidKeys.includes(event.key)) {
-    event.preventDefault();
+  blockInvalidNumberKeys(event: KeyboardEvent) {
+    const invalidKeys = ['e', 'E', '+', '-'];
+    if (invalidKeys.includes(event.key)) {
+      event.preventDefault();
+    }
   }
-}
 }
